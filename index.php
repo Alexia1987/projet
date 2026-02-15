@@ -2,6 +2,7 @@
 require_once "./controllers/MainController.php";
 $mainController = new MainController("","","","","");
 
+
 // 1. Définition de la fonction de sécurité
 //    (raw_$input = la donnée provenant de $_GET)
 
