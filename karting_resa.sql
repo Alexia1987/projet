@@ -139,7 +139,7 @@ VALUES ('admin', 'Administrateur avec tous les privilèges'),
 
 
 -- utilisateurs 
-INSERT INTO user (role_id, email, password, firstname, lastname, phone_number) 
+INSERT INTO user (role_id, email, password, firstname, lastname, phonenumber) 
 VALUES (1, 'admin@88karting.com', '$2y$10$tHXpOT82.6wTeLj12ziiNeCNaj1q4OCGQe6e7kgUbFHSp7Q6Jg5O2', 'Admin', 'Système', '0601020304'),
        (2, 'carole.dupont@email.com', '$2y$10$xUzX.UZBz3TUhaOhh/G68umIn08njxDxym9DS1ENeQdKr45vNKw6S', 'Carole', 'Dupont', '0612345678'),
        (2, 'marie.martin@email.com', '$2y$10$uy5pFCKHp77fJsu4HwK50O/zro0YvsSvIyoP0B96jK.57tA2tJ0Te', 'Marie', 'Martin', '0623456789'),
