@@ -1,0 +1,16 @@
+@import "tailwindcss";
+
+
+@theme {
+    --color-midnight-blue: oklch(0.2225 0.0855 270.68);
+    --color-grey-blue: oklch(0.28 0.06 270);
+    --color-fusion-orange: oklch(0.68 0.22 45.0);
+    --color-light-orange: oklch(0.84, 0.17, 85);
+    --color-dark-blue-steel: oklch(0.35 0.06 270); /* fonds de cartes */
+    --color-light: oklch(0.98 0.01 270); /* texte primaire */
+    --color-grey-blue: oklch(0.60 0.04 270); /* texte secondaire */
+
+    --default-font-family: "Racing Sans One";
+
+
+}
