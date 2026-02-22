@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="/output.css" rel="stylesheet">
+    <link rel="stylesheet" href="/projetFin/output.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Racing+Sans+One&display=swap" rel="stylesheet">
@@ -12,5 +12,5 @@
     <title>ChronoFusion Kart</title>
 </head>
 
-<?php include_once 'menu.php'?>
+<?php include_once '_menu.php'; ?>
 

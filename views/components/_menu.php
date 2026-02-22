@@ -1,14 +1,14 @@
-
+.
 
 <body class="box-border">
 
 <header>     
     <article class="">
-        <div>
+        <div class="flex flex-col">
             <a href="home">
                 <img src="" alt="" class="logo" />            
             </a>
-        </div class="flex flex-col">
+        </div>
             <nav class="bg-midnight-blue">
                 <ul class="flex flex-col md:flex-row justify-center items-center text-neutral-50 text-lg font-medium p-4">
                                         
