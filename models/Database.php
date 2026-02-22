@@ -8,7 +8,7 @@ try {
     $db = "karting";
     $charset = "utf8";
     $username = "root";
-    $password = "root_password";
+    $password = "";
 
     $dsn = "mysql:host=$host;port=$port;dbname=$db;charset=$charset";
 
