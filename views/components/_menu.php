@@ -1,18 +1,17 @@
-.
-
 <body class="box-border">
 
-<header>     
+<header class="">     
     <article class="">
-        <div class="flex flex-col">
-            <a href="home">
-                <img src="" alt="" class="logo" />            
-            </a>
-        </div>
-            <nav class="bg-midnight-blue">
-                <ul class="flex flex-col md:flex-row justify-center items-center text-neutral-50 text-lg font-medium p-4">
+        
+            <nav class="bg-midnight-blue py-1">
+                <div class="flex flex-col">
+                    <a href="home">
+                        <img src="" alt="" class="logo" />            
+                    </a>
+                </div>
+                <ul class="flex flex-col md:flex-row justify-center items-center text-neutral-50 text-base font-medium">
                                         
-                    <li class="flex items-center w-fit px-3 py-1">    
+                    <li class="flex items-center w-fit px-3">    
                         <button class="flex items-center text-neutral-50">Découvrir</button> <!--présentation générale du complexe, sécurité (encadrement), karts modernes homologués PMR, pistes par niveau-->  
                         <img class="size-7" src="../../img/icons/down-square-svgrepo-com.svg" alt="">
                        
@@ -29,7 +28,7 @@
                         </ul>
                     </li>         
 
-                    <li class="flex items-center w-fit px-3 py-1">                                           
+                    <li class="flex items-center w-fit px-3">                                           
                         <button class="text-neutral-50">Nos formules</button>
                         <img class="size-7" src="../../img/icons/down-square-svgrepo-com.svg" alt="">  
                         
@@ -46,7 +45,7 @@
                         </ul>                     
                     </li>         
               
-                    <li class="flex items-center w-fit px-3 py-1">                                         
+                    <li class="flex items-center w-fit px-3">                                         
                         <button class="flex items-center text-neutral-50">Infos pratiques</button>  
                         <img class="size-7" src="../../img/icons/down-square-svgrepo-com.svg" alt="">
                          
@@ -60,13 +59,13 @@
                         </ul>  
                     </li> 
 
-                    <li class="flex items-center w-fit text-center px-3 py-1">                        
+                    <li class="flex items-center w-fit text-center px-3">                        
                         <a class="" href="">Contact</a>                       
                     </li>      
 
-                    <li class="flex items-center w-fit px-3 py-1 border border-solid border-fusion-orange bg-fusion-orange rounded-lg m-2">
+                    <li class="flex items-center w-fit px-3 border border-solid border-fusion-orange bg-fusion-orange rounded-lg m-2">
                         <img src="" alt="">
-                        <a class="font-bold text-midnight-blue" href="">Réservation</a>  
+                        <a class="text-midnight-blue" href="">Réservation</a>  
                     </li>
                 </ul>
             </nav>

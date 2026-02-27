@@ -1,6 +1,3 @@
-
-
-
 <footer class="h-[30vh] bg-midnight-blue">
 
 <section class="grid grid-cols-1 md:grid-cols-2">
