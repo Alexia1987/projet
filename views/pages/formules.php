@@ -4,47 +4,54 @@ include_once '../../views/components/_header.php';
 
 <main>
     <section id="sessions" class="">
-        <h2 class="">Tarifs des sessions</h2>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 bg-neutral-800 text-neutral-50 p-4">
-            <article class="border border-solid border-amber-500 p-3" id="card">
+
+        <h2 class="">Nos Formules</h2>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 bg-midnight-blue text-neutral-200 p-4">        
+
+            <article class="corner-frame p-8" id="card">
+                <div>
+
+                <h3 class="text-center text-xl font-bold mb-8">Adultes Indoor</h3>
                 <img src="" alt="" aria-hidden="true">
-                <h3>Adultes</h3>
-                <p>15 ans et +</p>
+                </div>
+
+                <p class="">15 ans et +</p>
                 <ul>
                     <li>1 session : 17 €</li>
                     <li>2 sessions : 32 €</li>
                     <li>3 sessions : 44 €</li>
                 </ul>
-                <p>Une session dure 10 minutes</p>
+                <p>Une session dure 20 minutes</p>
                 <a href="#" class="btn-primary">Réserver</a>
             </article>
 
-            <article class="border border-solid border-amber-500 p-3" id="card">
+            <article class="corner-frame p-8" id="card">
+                <img class="" alt="" src="" aria-hidden="true">
+                <div>
+                    <h3 class="text-center text-xl font-bold mb-8">Adultes Outdoor</h3>
+                    <p>15 ans et +</p>
+                    <ul>
+                        <li>1 session : 20 € par adulte</li>
+                        <li>2 sessions : 35 € par adulte</li>
+                        <li>3 sessions : 47 € par adulte</li>
+                    </ul>
+                    <p>Une session dure 20 minutes</p>
+                    <a href="#" class="btn-primary">Réserver</a>
+                </div>
+            </article>
+
+            <article class="corner-frame p-8" id="card">
                 <img class="" src="" alt="" aria-hidden="true">
                 <div>
-                    <h3>Enfants</h3>
+                    <h3 class="text-center text-xl font-bold mb-8">Enfants Indoor</h3>
                     <p>de 7 à 14 ans</p>
                     <ul>
                         <li>1 session : 15 €</li>
                         <li>2 sessions : 28 €</li>
                         <li>3 sessions : 40 €</li>
                     </ul>
-                    <p>Une session dure 10 minutes</p>
-                    <a href="#" class="btn-primary">Réserver</a>
-                </div>
-            </article>
-
-            <article class="border border-solid border-amber-500 p-3" id="card">
-                <img class="" alt="" src="" aria-hidden="true">
-                <div>
-                    <h3>Groupes</h3>
-                    <p>Minimum 5 pilotes</p>
-                    <ul>
-                        <li>1 session : 16 € par adulte</li>
-                        <li>2 sessions : 30 € par adulte</li>
-                        <li>3 sessions : 42 € par adulte</li>
-                    </ul>
-                    <p>Une session dure 10 minutes</p>
+                    <p>Une session dure 20 minutes</p>
                     <a href="#" class="btn-primary">Réserver</a>
                 </div>
             </article>
