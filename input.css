@@ -12,7 +12,36 @@
     --color-grey-blue-secondary: oklch(0.60 0.04 270); /* texte secondaire */
 
     /* Typographie */
-    --default-font-family: "Racing Sans One";
+    --font-roboto: "Roboto", sans-serif;
+    --font-navbar: "Racing Sans One";
 
 
+}
+
+@utility corner-frame {
+    position: relative;
+
+    &::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 60%;
+        height: 60%;
+        background:
+            linear-gradient(to right, var(--color-fusion-orange), transparent) top / 100% 1px no-repeat,
+            linear-gradient(to bottom, var(--color-fusion-orange), transparent) left / 1px 100% no-repeat;
+    }
+
+    &::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        width: 60%;
+        height: 60%;
+        background:
+            linear-gradient(to left, var(--color-fusion-orange), transparent) bottom / 100% 1px no-repeat,
+            linear-gradient(to top, var(--color-fusion-orange), transparent) right / 1px 100% no-repeat;
+    }
 }
