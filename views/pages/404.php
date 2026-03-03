@@ -9,6 +9,6 @@ include_once '../../views/components/_header.php';
 <button>Retour au site</button>
 
 <?php
-include_once '../../views/components/footer.php';
+include_once '../../views/components/_footer.php';
 ?>
 
