@@ -3,7 +3,7 @@
 <header class="">     
     <article class="">
         
-            <nav class="bg-midnight-blue py-1">
+            <nav class="bg-midnight-blue py-1 font-navbar">
                 <div class="flex flex-col">
                     <a href="home">
                         <img src="" alt="" class="logo" />            
@@ -63,7 +63,7 @@
                         <a class="" href="">Contact</a>                       
                     </li>      
 
-                    <li class="flex items-center w-fit px-3 border border-solid border-fusion-orange bg-fusion-orange rounded-lg m-2">
+                    <li class="flex items-center w-fit px-3 border border-solid border-fusion-orange bg-fusion-orange rounded-md m-2">
                         <img src="" alt="">
                         <a class="text-midnight-blue" href="">Réservation</a>  
                     </li>
