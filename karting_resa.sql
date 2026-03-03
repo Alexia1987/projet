@@ -84,7 +84,7 @@ CREATE TABLE `session_vehicle` (
 -- TABLE: booking
 CREATE TABLE `booking` (
   `bkg_id` int NOT NULL AUTO_INCREMENT,
-  `bkg_user_id` int NOT NULL,
+  `bkg_user_id` int,
   `bkg_session_id` int NOT NULL,
   `bkg_nb_of_participants` int NOT NULL,
   `bkg_booking_status` enum('pending','confirmed','cancelled','completed') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'pending',
@@ -127,7 +127,7 @@ REFERENCES `session`(`ses_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 ALTER TABLE `booking`
 ADD CONSTRAINT `fk_booking_user` FOREIGN KEY (`bkg_user_id`)
-REFERENCES `user`(`usr_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+REFERENCES `user`(`usr_id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 ALTER TABLE `booking`
 ADD CONSTRAINT `fk_booking_session` FOREIGN KEY (`bkg_session_id`)
