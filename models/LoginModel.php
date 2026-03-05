@@ -1,7 +1,7 @@
 <?php 
 
 //session_start();
-require_once "Database.php";
+$pdo = require_once __DIR__ . "/Database.php";
 
 $email_input = null;
 $pwd_input = null;
@@ -40,3 +40,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         echo "Une erreur technique est survenue.";
     }
 }
+
+
+
+
+
+
