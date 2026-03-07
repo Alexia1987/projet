@@ -2,17 +2,15 @@
 
 abstract class AbstractController {
 
-    protected function render( string $page, array $data = [] )
-    {
-        extract($data);
-
-        include_once "./views/commons/template.php";
-    }
+    private function render(string $page, array $data = []): void
+        {  
+            extract($data);
+            include __DIR__ . "/../views/pages/$page.php";
+        }
 
     protected function redirectToRoute( string $routeName )
-    {
-        header("Location: index.php?route=". $routeName);
-        exit();
-    }
-
+        {
+            header("Location: index.php?route=". $routeName);
+            exit();
+        }
 }
