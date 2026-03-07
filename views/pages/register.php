@@ -1,6 +1,6 @@
 <?php 
+include_once __DIR__ . '/../components/_header.php';
 require_once '../../models/RegisterModel.php'; 
-include_once '../../views/components/_header.php';
 ?>
 
 <body class="">

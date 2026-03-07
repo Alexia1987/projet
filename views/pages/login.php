@@ -1,4 +1,4 @@
-<?php include '../components/_header.php';
+<?php include_once __DIR__ . '/../components/_header.php';
 include_once '../../models/LoginModel.php';
 ?>
 

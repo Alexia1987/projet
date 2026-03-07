@@ -1,5 +1,5 @@
 <?php
-include_once '../../views/components/_header.php';
+include_once __DIR__ . '/../components/_header.php';
 ?>
 
 <main class="bg-midnight-blue font-roboto text-neutral-200 pt-15">
