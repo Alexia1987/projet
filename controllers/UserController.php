@@ -1,6 +1,6 @@
 <?php 
 
-class MainController {
+class UserController {
     // propriétés de la classe 
     private $email;
     private $password;
@@ -16,19 +16,5 @@ class MainController {
         $this->lastname = $lastname;
         $this->firstname = $firstname;
         $this->phonenumber = $phonenumber;
-    }
-
-    private function emptyInput() {
-        $result;
-
-      
-    }
-
-    public function showHome(){
-
-    }
-
-    public function showSession(){
-
     }
 }
