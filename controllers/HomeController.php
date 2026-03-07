@@ -2,9 +2,9 @@
 
 require_once "AbstractController.php";
 
-class HomeController /*extends AbstractController*/ {
+class HomeController extends AbstractController {
 
-    public function showHome() {      
+    public function displayHome() {      
         require_once "views/pages/home.php";  
 }
 }
