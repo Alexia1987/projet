@@ -3,8 +3,6 @@ include_once __DIR__ . '/../components/_header.php';
 require_once '../../models/RegisterModel.php'; 
 ?>
 
-<body class="">
-
 <main class="min-h-dvh flex justify-center items-center bg-gradient-to-br from-midnight-blue via-dark-blue-steel to-midnight-blue" 
       id="register-form">
 

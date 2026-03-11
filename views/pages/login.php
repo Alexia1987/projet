@@ -2,8 +2,6 @@
 include_once '../../models/LoginModel.php';
 ?>
 
-<body>
-
 <main class="min-h-dvh flex justify-center items-center bg-gradient-to-br from-midnight-blue via-dark-blue-steel to-midnight-blue" 
       id="login-form">
 
