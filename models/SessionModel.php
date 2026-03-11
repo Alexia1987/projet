@@ -47,8 +47,8 @@ function defineSlotTimeRange(string $date, string $openTime, string $closeTime):
     );
 }
 
-// Lit opening_hours (par défaut) et
-// retourne les horaires standards pour un jour donné (0=lundi ... 6=dimanche),
+// Lit opening_hours et
+// retourne les horaires standards pour un jour donné (1=lundi ... 7=dimanche),
 // retourne null si le jour est fermé ou inexistant en BDD. 
 function getStandardHours(PDO $pdo, int $day): ?array {
     $sql = "SELECT oh_open, oh_close 
@@ -96,10 +96,10 @@ function getHoursForDate(PDO $pdo, string $date): ?array {
                                                                                                                                                                                                                     
     // strtotime($date) convertit la chaîne "YYYY-MM-DD" en timestamp Unix (nb de secondes depuis le 01/01/1970),
     // car date() attend un timestamp et ne comprend pas les chaînes.
-    // - 1 décale le résultat pour obtenir une numérotation 0-based : 0 = lundi, 1 = mardi, ... 6 = dimanche. 
-    // C'est le format attendu par la colonne oh_day / sh_day en BDD.
     // (int) cast le résultat en entier (par précaution, car date() retourne une chaîne).  
-    $day = (int) date('N', strtotime($date)) - 1;
+
+    // 'N' = Représentation numérique ISO 8601 du jour de la semaine (1 = Lundi, 7 = Dimanche)
+    $day = (int) date('N', strtotime($date));
     return getSpecialHours($pdo, $date, $day) ?? getStandardHours($pdo, $day);
 }
 
