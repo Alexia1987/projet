@@ -25,6 +25,7 @@ function getUpcomingSessions(PDO $pdo): array {
     return $query->fetchAll();
 }
 
+
 /**
  * Construit un DatePeriod de créneaux de 30 minutes pour un jour donné.
  *
@@ -73,7 +74,7 @@ function insertSlots(PDO $pdo, int $trackId, string $startDate, string $endDate,
 
         foreach ($period as $day) {
             $dateStr = $day->format('Y-m-d');
-            $hours = getHoursForDate($pdo, $dateStr);
+            $hours = getOpeningHoursForDate($pdo, $dateStr);
             // Si null est retourné, 'continue' ignore ce jour et passe au jour suivant dans $period, 
             // et n'exécute pas defineSlotTimeRange().
             if ($hours === null) continue; // Établissement fermé ce jour.
