@@ -1,6 +1,8 @@
 <?php
-require_once "./controllers/MainController.php";
-$mainController = new MainController("","","","","");
+require_once "./controllers/HomeController.php";
+require_once "./controllers/SessionController.php";
+$homeController = new HomeController("","","","","");
+$sessionController = new SessionController();
 
 
 // 1. Définition de la fonction de sécurité
@@ -26,21 +28,26 @@ function getSafeUrl($raw_input) {
 // 5. Si $_GET['page'] est vide, on force un tableau avec 'home'
 $url = (isset($_GET['page']) && !empty($_GET['page'])) ? getSafeUrl($_GET['page']) : ['home'];
 
-// 6. On récupère l'action principale (le premier segment de l'URL)
-$pageRequest = $url[0];
+// 6. On reconstruit la route complète (ex: "session/create-slots")
+$pageRequest = implode('/', $url);
 
 // 7. Liste blanche des pages autorisées
 // (Pour éviter l'inclusion de fichiers sensibles)
-$allowed = ['home', 'user', 'about', 'session'];
+$allowed = ['home', 'calendar', 'create-slots'];
 
 switch ($pageRequest){
     case 'home':
-    $mainController->showHome();
+    $homeController->displayHome();
     break;  
 
-    case 'session':
-    $mainController->showSession();
-    break;  
+    case 'calendar':
+    $sessionController->displaySlotsInCalendar($pdo);
+    break;
+
+    case 'create-slots':
+    $count = $sessionController->generateSlots($pdo, '2026-03-11', '2026-03-31');
+    echo "$count créneaux générés.";
+    break;
     
     default:
         echo "Page non trouvée";
