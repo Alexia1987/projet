@@ -1,20 +1,9 @@
--- Base de données : `karting`
-
-DROP DATABASE IF EXISTS `karting`;
-
-CREATE DATABASE IF NOT EXISTS `karting`;
-
-USE `karting`;
-
-
--- TABLES (STRUCTURE)
-
 -- phpMyAdmin SQL Dump
 -- version 5.2.3
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3306
--- Généré le : lun. 09 mars 2026 à 10:23
+-- Généré le : mer. 11 mars 2026 à 08:51
 -- Version du serveur : 8.4.7
 -- Version de PHP : 8.3.28
 
@@ -28,6 +17,32 @@ SET time_zone = "+00:00";
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
 /*!40101 SET NAMES utf8mb4 */;
 
+--
+-- Base de données : `karting`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `booking`
+--
+
+DROP TABLE IF EXISTS `booking`;
+CREATE TABLE IF NOT EXISTS `booking` (
+  `bkg_id` int NOT NULL AUTO_INCREMENT,
+  `bkg_user_id` int DEFAULT NULL,
+  `bkg_session_id` int NOT NULL,
+  `bkg_nb_of_participants` int NOT NULL,
+  `bkg_booking_status` enum('pending','confirmed','cancelled','completed') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'pending',
+  `bkg_total_price` decimal(7,2) NOT NULL,
+  `bkg_booked_at` datetime DEFAULT CURRENT_TIMESTAMP,
+  `bkg_updated_at` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `bkg_cancelled_at` datetime DEFAULT NULL,
+  PRIMARY KEY (`bkg_id`),
+  KEY `fk_booking_session` (`bkg_session_id`),
+  KEY `fk_booking_user` (`bkg_user_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
 -- --------------------------------------------------------
 
 --
@@ -37,29 +52,41 @@ SET time_zone = "+00:00";
 DROP TABLE IF EXISTS `opening_hours`;
 CREATE TABLE IF NOT EXISTS `opening_hours` (
   `oh_id` int NOT NULL AUTO_INCREMENT,
-  `oh_day` tinyint NOT NULL COMMENT '0=lundi, 1=mardi, ..., 6=dimanche',
+  `oh_day` tinyint NOT NULL COMMENT '1=lundi, ... 7=dimanche',
   `oh_open` time DEFAULT NULL COMMENT 'NULL = fermé ce jour',
   `oh_close` time DEFAULT NULL,
   PRIMARY KEY (`oh_id`),
   UNIQUE KEY `uq_oh_day` (`oh_day`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Déchargement des données de la table `opening_hours`
+--
+
+INSERT INTO `opening_hours` (`oh_id`, `oh_day`, `oh_open`, `oh_close`) VALUES
+(1, 1, NULL, NULL),
+(2, 2, NULL, NULL),
+(3, 3, '10:00:00', '21:00:00'),
+(4, 4, '14:00:00', '21:00:00'),
+(5, 5, '14:00:00', '23:00:00'),
+(6, 6, '09:00:00', '23:00:00'),
+(7, 7, '09:00:00', '21:00:00');
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `special_hours`
+-- Structure de la table `payment`
 --
 
-DROP TABLE IF EXISTS `special_hours`;
-CREATE TABLE IF NOT EXISTS `special_hours` (
-  `sh_id` int NOT NULL AUTO_INCREMENT,
-  `sh_label` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Ex: Vacances de Noël',
-  `sh_date_start` date NOT NULL,
-  `sh_date_end` date NOT NULL,
-  `sh_day` tinyint NOT NULL COMMENT '0=lundi, ..., 6=dimanche',
-  `sh_open` time DEFAULT NULL COMMENT 'NULL = fermé ce jour pendant la période',
-  `sh_close` time DEFAULT NULL,
-  PRIMARY KEY (`sh_id`)
+DROP TABLE IF EXISTS `payment`;
+CREATE TABLE IF NOT EXISTS `payment` (
+  `pmt_id` int NOT NULL AUTO_INCREMENT,
+  `pmt_booking_id` int NOT NULL,
+  `pmt_total_paid` decimal(7,2) NOT NULL,
+  `pmt_payment_status` enum('pending','completed','failed','refunded') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'pending',
+  `pmt_paid_at` datetime DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`pmt_id`),
+  KEY `fk_payment_booking` (`pmt_booking_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -88,38 +115,6 @@ INSERT INTO `role` (`rol_id`, `rol_name`, `rol_description`, `rol_created_at`) V
 -- --------------------------------------------------------
 
 --
--- Structure de la table `user`
---
-
-DROP TABLE IF EXISTS `user`;
-CREATE TABLE IF NOT EXISTS `user` (
-  `usr_id` int NOT NULL AUTO_INCREMENT,
-  `usr_role_id` int NOT NULL,
-  `usr_firstname` varchar(80) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `usr_lastname` varchar(80) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `usr_email` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `usr_password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `usr_phonenumber` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `usr_created_at` datetime DEFAULT CURRENT_TIMESTAMP,
-  `usr_updated_at` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`usr_id`),
-  KEY `fk_user_role` (`usr_role_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Déchargement des données de la table `user`
---
-
-INSERT INTO `user` (`usr_id`, `usr_role_id`, `usr_firstname`, `usr_lastname`, `usr_email`, `usr_password`, `usr_phonenumber`, `usr_created_at`, `usr_updated_at`) VALUES
-(1, 1, 'Admin', 'Système', 'admin@88karting.com', '$2y$10$tHXpOT82.6wTeLj12ziiNeCNaj1q4OCGQe6e7kgUbFHSp7Q6Jg5O2', '0601020304', '2026-03-03 13:35:37', '2026-03-03 13:35:37'),
-(2, 2, 'Carole', 'Dupont', 'carole.dupont@email.com', '$2y$10$xUzX.UZBz3TUhaOhh/G68umIn08njxDxym9DS1ENeQdKr45vNKw6S', '0612345678', '2026-03-03 13:35:37', '2026-03-03 13:35:37'),
-(3, 2, 'Marie', 'Martin', 'marie.martin@email.com', '$2y$10$uy5pFCKHp77fJsu4HwK50O/zro0YvsSvIyoP0B96jK.57tA2tJ0Te', '0623456789', '2026-03-03 13:35:37', '2026-03-03 13:35:37'),
-(4, 2, 'Pierre', 'Leroy', 'pierre.leroy@email.com', '$2y$10$1qEFby09JSAbCGaYs36Z.O1cOTM39mDmPcN7TlXxXiHC/GcUVUjGi', '0734567890', '2026-03-03 13:35:37', '2026-03-03 13:35:37'),
-(5, 2, 'Sophie', 'Meyer', 'sophie.meyer@email.com', '$2y$10$O5kv9.iYNc2mJ5oyRa94ZOtVr8dwZALC6GlhhmqRcYq5eM/JuZqCG', '0645678901', '2026-03-03 13:35:37', '2026-03-03 13:35:37');
-
--- --------------------------------------------------------
-
---
 -- Structure de la table `session`
 --
 
@@ -136,8 +131,6 @@ CREATE TABLE IF NOT EXISTS `session` (
   PRIMARY KEY (`ses_id`),
   UNIQUE KEY `uq_track_start` (`ses_track_id`,`ses_start_time`)
 ) ENGINE=InnoDB AUTO_INCREMENT=101 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
--- --------------------------------------------------------
 
 --
 -- Déchargement des données de la table `session`
@@ -182,6 +175,51 @@ CREATE TABLE IF NOT EXISTS `session_vehicle` (
 -- --------------------------------------------------------
 
 --
+-- Structure de la table `settings`
+--
+
+DROP TABLE IF EXISTS `settings`;
+CREATE TABLE IF NOT EXISTS `settings` (
+  `key` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `value` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`key`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Déchargement des données de la table `settings`
+--
+
+INSERT INTO `settings` (`key`, `value`, `created_at`, `updated_at`) VALUES
+('booking_delay', '24', '2026-03-10 21:44:32', '2026-03-10 21:44:32'),
+('contact_email', 'contact@chronokart-fusion.fr', '2026-03-10 21:44:32', '2026-03-10 21:44:32'),
+('contact_phone', '03 88 00 00 00', '2026-03-10 21:44:32', '2026-03-10 21:44:32'),
+('holiday_mode', '0', '2026-03-10 21:37:54', '2026-03-10 21:37:54'),
+('maintenance_mode', '0', '2026-03-10 21:44:32', '2026-03-10 21:44:32'),
+('site_name', 'ChronoKart Fusion', '2026-03-10 21:44:32', '2026-03-10 21:44:32');
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `special_hours`
+--
+
+DROP TABLE IF EXISTS `special_hours`;
+CREATE TABLE IF NOT EXISTS `special_hours` (
+  `sh_id` int NOT NULL AUTO_INCREMENT,
+  `sh_label` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Ex: Vacances de Noël',
+  `sh_date_start` date NOT NULL,
+  `sh_date_end` date NOT NULL,
+  `sh_day` tinyint NOT NULL COMMENT '1=lundi, ... 7=dimanche',
+  `sh_open` time DEFAULT NULL COMMENT 'NULL = fermé ce jour pendant la période',
+  `sh_close` time DEFAULT NULL,
+  PRIMARY KEY (`sh_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Structure de la table `track`
 --
 
@@ -208,6 +246,38 @@ INSERT INTO `track` (`trk_id`, `trk_name`, `trk_description`, `trk_length_meters
 -- --------------------------------------------------------
 
 --
+-- Structure de la table `user`
+--
+
+DROP TABLE IF EXISTS `user`;
+CREATE TABLE IF NOT EXISTS `user` (
+  `usr_id` int NOT NULL AUTO_INCREMENT,
+  `usr_role_id` int NOT NULL,
+  `usr_firstname` varchar(80) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `usr_lastname` varchar(80) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `usr_email` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `usr_password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `usr_phonenumber` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `usr_created_at` datetime DEFAULT CURRENT_TIMESTAMP,
+  `usr_updated_at` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`usr_id`),
+  KEY `fk_user_role` (`usr_role_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Déchargement des données de la table `user`
+--
+
+INSERT INTO `user` (`usr_id`, `usr_role_id`, `usr_firstname`, `usr_lastname`, `usr_email`, `usr_password`, `usr_phonenumber`, `usr_created_at`, `usr_updated_at`) VALUES
+(1, 1, 'Admin', 'Système', 'admin@88karting.com', '$2y$10$tHXpOT82.6wTeLj12ziiNeCNaj1q4OCGQe6e7kgUbFHSp7Q6Jg5O2', '0601020304', '2026-03-03 13:35:37', '2026-03-03 13:35:37'),
+(2, 2, 'Carole', 'Dupont', 'carole.dupont@email.com', '$2y$10$xUzX.UZBz3TUhaOhh/G68umIn08njxDxym9DS1ENeQdKr45vNKw6S', '0612345678', '2026-03-03 13:35:37', '2026-03-03 13:35:37'),
+(3, 2, 'Marie', 'Martin', 'marie.martin@email.com', '$2y$10$uy5pFCKHp77fJsu4HwK50O/zro0YvsSvIyoP0B96jK.57tA2tJ0Te', '0623456789', '2026-03-03 13:35:37', '2026-03-03 13:35:37'),
+(4, 2, 'Pierre', 'Leroy', 'pierre.leroy@email.com', '$2y$10$1qEFby09JSAbCGaYs36Z.O1cOTM39mDmPcN7TlXxXiHC/GcUVUjGi', '0734567890', '2026-03-03 13:35:37', '2026-03-03 13:35:37'),
+(5, 2, 'Sophie', 'Meyer', 'sophie.meyer@email.com', '$2y$10$O5kv9.iYNc2mJ5oyRa94ZOtVr8dwZALC6GlhhmqRcYq5eM/JuZqCG', '0645678901', '2026-03-03 13:35:37', '2026-03-03 13:35:37');
+
+-- --------------------------------------------------------
+
+--
 -- Structure de la table `vehicle`
 --
 
@@ -230,48 +300,7 @@ INSERT INTO `vehicle` (`vhc_id`, `vhc_name`, `vhc_description`, `vhc_max_speed_k
 (2, 'Kart Speedster V8', 'Kart polyvalent pour tous les niveaux', 60, 1),
 (3, 'Kart Junior Fun', 'Kart adapté aux enfants de 8 à 14 ans', 40, 1),
 (4, 'Kart Électrique Pro', 'Kart électrique silencieux et puissant', 70, 1),
-(5, 'Kart Biplace', 'Kart biplace pour partager l\expérience', 50, 1);
-
--- --------------------------------------------------------
-
---
--- Structure de la table `booking`
---
-
-DROP TABLE IF EXISTS `booking`;
-CREATE TABLE IF NOT EXISTS `booking` (
-  `bkg_id` int NOT NULL AUTO_INCREMENT,
-  `bkg_user_id` int DEFAULT NULL,
-  `bkg_session_id` int NOT NULL,
-  `bkg_nb_of_participants` int NOT NULL,
-  `bkg_booking_status` enum('pending','confirmed','cancelled','completed') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'pending',
-  `bkg_total_price` decimal(7,2) NOT NULL,
-  `bkg_booked_at` datetime DEFAULT CURRENT_TIMESTAMP,
-  `bkg_updated_at` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `bkg_cancelled_at` datetime DEFAULT NULL,
-  PRIMARY KEY (`bkg_id`),
-  KEY `fk_booking_session` (`bkg_session_id`),
-  KEY `fk_booking_user` (`bkg_user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
--- --------------------------------------------------------
-
---
--- Structure de la table `payment`
---
-
-DROP TABLE IF EXISTS `payment`;
-CREATE TABLE IF NOT EXISTS `payment` (
-  `pmt_id` int NOT NULL AUTO_INCREMENT,
-  `pmt_booking_id` int NOT NULL,
-  `pmt_total_paid` decimal(7,2) NOT NULL,
-  `pmt_payment_status` enum('pending','completed','failed','refunded') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'pending',
-  `pmt_paid_at` datetime DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`pmt_id`),
-  KEY `fk_payment_booking` (`pmt_booking_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
--- --------------------------------------------------------
+(5, 'Kart Biplace', 'Kart biplace pour partager lexpérience', 50, 1);
 
 --
 -- Contraintes pour les tables déchargées
