@@ -42,7 +42,7 @@ include_once '../../models/LoginModel.php';
     </form>
 </main>
 
-<?php include_once '../../views/components/_footer.php';?>
+<?php include_once __DIR__ . '/../components/_footer.php'; ?>
 
 </body>
 </html>

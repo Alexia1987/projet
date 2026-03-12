@@ -11,7 +11,6 @@ $events = array_map(function($s) {
 }, $sessions ?? []);
 ?>
 
-<body>
     <main>
         <section id="fullcalendar-section" class="p-6">
             <div id="calendar"></div>
@@ -19,7 +18,8 @@ $events = array_map(function($s) {
     </main>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function() 
+        {
         const calendarEl = document.getElementById('calendar');
         const calendar = new FullCalendar.Calendar(calendarEl, {
             locale: 'fr',

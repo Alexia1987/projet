@@ -8,7 +8,5 @@ include_once __DIR__ . '/../components/_header.php';
 
 <button>Retour à la page d'accueil</button>
 
-<?php
-include_once '../../views/components/_footer.php';
-?>
+<?php include_once __DIR__ . '/../components/_footer.php'; ?>
 
