@@ -1,4 +1,5 @@
 <?php
+session_start();
 require_once "./controllers/HomeController.php";
 require_once "./controllers/SessionController.php";
 $homeController = new HomeController("","","","","");
@@ -33,7 +34,7 @@ $pageRequest = implode('/', $url);
 
 // 7. Liste blanche des pages autorisées
 // (Pour éviter l'inclusion de fichiers sensibles)
-$allowed = ['home', 'calendar', 'create-slots'];
+$allowed = ['home', 'calendar', 'create-slots', 'register'];
 
 switch ($pageRequest){
     case 'home':

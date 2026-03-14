@@ -1,6 +1,8 @@
 <?php
 
-// Création de la connexion PDO avec options sécurisées  
+// Création de la connexion PDO avec options sécurisées 
+$message = "";
+
 try {
     // DSN (Data Source Name)
     $host = "127.0.0.1";
@@ -22,7 +24,7 @@ try {
     // echo "Connexion réussie à la base de données.";
 }
 catch (PDOException $e) {
-    echo "Erreur de connexion";
+    $message = "Erreur de connexion";
     // error_log($e->getMessage()); // On écrit l'erreur dans un fichier caché
     // header('Location: /page-erreur-technique.html'); // On redirige l'utilisateur
     exit(); // On arrête quand même le script après la redirection

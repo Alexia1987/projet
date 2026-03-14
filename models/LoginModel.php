@@ -1,10 +1,10 @@
 <?php 
 
-//session_start();
 $pdo = require_once __DIR__ . "/Database.php";
 
 $email_input = null;
 $pwd_input = null;
+$message = "";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
@@ -16,11 +16,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     try {
         $sql = "SELECT * FROM `user` WHERE `usr_email` = :email";
-
         $query = $pdo->prepare($sql);
-
         $query->execute([":email" => $email_input]);
-
         $user = $query->fetch();
 
         if
@@ -31,13 +28,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $_SESSION["role_id"] = $user["usr_role_id"];
             $_SESSION["firstname"] = $user["usr_firstname"];
     
-            echo "Bienvenue, vous êtes connecté !";
+            $message = "Bienvenue, vous êtes connecté !";
         } else {
-            echo "Identifiants incorrects";
+            $message =  "Identifiants incorrects";
         }
 
     } catch (PDOException $e){      
-      echo "Une erreur technique est survenue.";
+      $message =  "Une erreur technique est survenue.";
     }
 }
 
