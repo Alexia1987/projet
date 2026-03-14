@@ -24,40 +24,55 @@ function getOneUser($pdo, $id)
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     if (isset ($_POST["add"]) && (!empty ($_POST["add"]))) {
-        $email = ($_POST["email"]);
-        $clearPassword = ($_POST["password"]);
-        $options = ['cost' => 12];
-        $hashedPassword = password_hash($clearPassword, PASSWORD_BCRYPT, $options);
-        $lastname = ($_POST["lastname"]);
-        $firstname = ($_POST["firstname"]); 
-        $phone_number = ($_POST["phone_number"]);
+        $role_id      = (int)$_POST["role_id"];
+        $email        = $_POST["email"];
+        $clearPassword = $_POST["password"];        
+        $firstname    = $_POST["firstname"];
+        $lastname     = $_POST["lastname"];
+        $phone_number = $_POST["phone_number"];
 
-        addUser($pdo, $email, $hashedPassword, $firstname, $lastname, $phone_number);     
+        addUser($pdo, $role_id, $email, $clearPassword, $firstname, $lastname, $phone_number);
     }
     }
 
-function addUser($pdo, $email, $hashedPassword, $firstname, $lastname, $phone_number) {
+function addUser($pdo, $role_id, $email, $clearPassword, $firstname, $lastname, $phone_number) {
     try {
-                
-        $sql = "INSERT INTO `user`(`usr_email`, `usr_password`, `usr_firstname`, `usr_lastname`, `usr_phonenumber`)
-                VALUES(:email, :password, :firstname, :lastname, :phone_number)";
-        
-        $query = $pdo->prepare($sql);
+        $message = "";
 
-        $result = $query->execute([
-            ':email' => $email,
-            ':password' => $hashedPassword,
-            ':firstname' => $firstname,
-            ':lastname' => $lastname,        
-            ':phone_number' => $phone_number
+        // Vérifie si l'email existe déjà en base.
+        $checkEmailSql = "SELECT COUNT(*) FROM `user` WHERE `usr_email` = :email";
+        $checkEmailQuery = $pdo->prepare($checkEmailSql);
+        $checkEmailQuery->execute([':email' => $email]);
+
+        if ($checkEmailQuery->fetchColumn() > 0) {
+            $message = "Cette adresse email est déjà utilisée.";
+        } else {
+            // Hachage du mot de passe (uniquement si l'email est disponible).
+            $options = ['cost' => 12];
+            $hashedPassword = password_hash($clearPassword, PASSWORD_DEFAULT, $options);
+
+            $sql = "INSERT INTO `user`(`usr_role_id`, `usr_email`, `usr_password`, `usr_firstname`, `usr_lastname`, `usr_phonenumber`)
+                    VALUES(:role_id, :email, :password, :firstname, :lastname, :phone_number)";
+
+            $query = $pdo->prepare($sql);
+
+            $result = $query->execute([
+                ':role_id'      => $role_id,
+                ':email'        => $email,
+                ':password'     => $hashedPassword,
+                ':firstname'    => $firstname,
+                ':lastname'     => $lastname,
+                ':phone_number' => $phone_number
             ]);
-                
-        if ($result) {
-            echo "Succès ! Votre compte a été crée.";                  
-        } 
+
+            if ($result) {
+                $message = "Votre compte a été crée avec succès.";
+            }
+        }
+
     } catch (PDOException $e) {
-        echo "Une erreur technique est survenue.";            
-    }       
+        $message = "Une erreur technique est survenue.";
+    }
 }
 
 
@@ -79,7 +94,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 function updateUser($pdo, $id, $email, $password, $firstname, $lastname, $phone_number) {   
     try {
-        
+        $message = "";
         $options = ['cost' => 12];
         $hashedPassword = password_hash($password, PASSWORD_BCRYPT, $options);
 
@@ -103,11 +118,11 @@ function updateUser($pdo, $id, $email, $password, $firstname, $lastname, $phone_
             ]);
             
         if ($result) {
-            echo "Votre compte a bien été modifié.";            
+            $message =  "Votre compte a bien été modifié.";            
             } 
 
     } catch (PDOException $e) {
-        echo "Une erreur technique est survenue.";
+        $message =  "Une erreur technique est survenue.";
 }
 }
 
@@ -122,6 +137,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 function deleteUser($pdo, $id) {           
     try {
+        $message = "";
         $sql = "DELETE FROM `user` WHERE `usr_id` = :id";
                         
         $query = $pdo->prepare($sql);
@@ -129,11 +145,11 @@ function deleteUser($pdo, $id) {
         $result = $query->execute([':id' => $id]);
                         
         if ($result) {
-        echo "Votre compte a été supprimé.";                
+        $message =  "Votre compte a été supprimé.";                
         } 
                         
     } catch (PDOException $e) {
-        echo "Une erreur technique est survenue.";            
+        $message =  "Une erreur technique est survenue.";            
     }       
     }
         
