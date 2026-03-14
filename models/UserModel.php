@@ -1,7 +1,7 @@
 <?php
 
 $pdo = require_once __DIR__ . "/Database.php";
-// require_once "../functions/validator.php";
+require_once __DIR__ . "/../functions/validator.php";
 
 // ---READ---
 function getAllUsers($pdo)
@@ -16,7 +16,7 @@ function getOneUser($pdo, $id)
 {
     $sql = "SELECT * FROM `user` WHERE `usr_id` = :id";
     $query = $pdo->prepare($sql);
-    $query->execute(['id' => $id]);
+    $query->execute([':id' => $id]);
     return $query->fetch();
 }
 
@@ -38,6 +38,28 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 function addUser($pdo, $role_id, $email, $clearPassword, $firstname, $lastname, $phone_number) {
     try {
         $message = "";
+
+        // Validation des champs.
+        if (!isEmailValid($email)) {
+            $message = "L'adresse email est invalide.";
+            return;
+        }
+        if (!isPasswordStrong($clearPassword)) {
+            $message = "Le mot de passe doit contenir entre 12 et 20 caractères, avec au moins une majuscule, une minuscule, un chiffre et un caractère spécial (@$!%*?&).";
+            return;
+        }
+        if (!isNameValid($firstname)) {
+            $message = "Le prénom est invalide.";
+            return;
+        }
+        if (!isNameValid($lastname)) {
+            $message = "Le nom est invalide.";
+            return;
+        }
+        if (!isPhoneValid($phone_number)) {
+            $message = "Le numéro de téléphone est invalide.";
+            return;
+        }
 
         // Vérifie si l'email existe déjà en base.
         $checkEmailSql = "SELECT COUNT(*) FROM `user` WHERE `usr_email` = :email";

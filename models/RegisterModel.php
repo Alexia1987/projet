@@ -1,7 +1,7 @@
 <?php
 
 $pdo = require_once __DIR__ . "/Database.php";
-// require_once "../functions/validator.php";
+require_once __DIR__ . "/../functions/validator.php";
 
 $message = "";
 
@@ -16,6 +16,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $phone_number   = $_POST["phone_number"];
 
         try {
+            // Validation des champs.
+            if (!isEmailValid($email)) {
+                $message = "L'adresse email est invalide.";
+            } elseif (!isPasswordStrong($password_clear)) {
+                $message = "Le mot de passe doit contenir entre 12 et 20 caractères, avec au moins une majuscule, une minuscule, un chiffre et un caractère spécial (@$!%*?&).";
+            } elseif (!isNameValid($firstname)) {
+                $message = "Le prénom est invalide.";
+            } elseif (!isNameValid($lastname)) {
+                $message = "Le nom est invalide.";
+            } elseif (!isPhoneValid($phone_number)) {
+                $message = "Le numéro de téléphone est invalide.";
+            } else {
+
             // Vérifie si l'email existe déjà en base.
             $checkEmailSql = "SELECT COUNT(*) FROM `user` WHERE `usr_email` = :email";
             $checkEmailQuery = $pdo->prepare($checkEmailSql);
@@ -45,6 +58,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     $message = "Votre compte a été crée avec succès.";
                 }
             }
+            } // fin else validation
 
         } catch (PDOException $e) {
             $message = "Une erreur technique est survenue.";
