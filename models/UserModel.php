@@ -14,7 +14,7 @@ function getAllUsers($pdo)
 
 function getOneUser($pdo, $id)
 {
-    $sql = "SELECT * FROM `user` WHERE id = :id";
+    $sql = "SELECT * FROM `user` WHERE `usr_id` = :id";
     $query = $pdo->prepare($sql);
     $query->execute(['id' => $id]);
     return $query->fetch();
@@ -39,7 +39,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 function addUser($pdo, $email, $hashedPassword, $firstname, $lastname, $phone_number) {
     try {
                 
-        $sql = "INSERT INTO user(email, `password`, firstname, lastname, phone_number)
+        $sql = "INSERT INTO `user`(`usr_email`, `usr_password`, `usr_firstname`, `usr_lastname`, `usr_phonenumber`)
                 VALUES(:email, :password, :firstname, :lastname, :phone_number)";
         
         $query = $pdo->prepare($sql);
@@ -83,13 +83,13 @@ function updateUser($pdo, $id, $email, $password, $firstname, $lastname, $phone_
         $options = ['cost' => 12];
         $hashedPassword = password_hash($password, PASSWORD_BCRYPT, $options);
 
-        $sql = "UPDATE `user` 
-                SET email = :email, 
-                    `password` = :password, 
-                    firstname = :firstname,  
-                    lastname = :lastname,                     
-                    phone_number = :phone_number    
-                WHERE id = :id";
+        $sql = "UPDATE `user`
+                SET `usr_email` = :email,
+                    `usr_password` = :password,
+                    `usr_firstname` = :firstname,
+                    `usr_lastname` = :lastname,
+                    `usr_phonenumber` = :phone_number
+                WHERE `usr_id` = :id";
 
         $query = $pdo->prepare($sql);
 
@@ -122,7 +122,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 function deleteUser($pdo, $id) {           
     try {
-        $sql = "DELETE FROM user WHERE id = :id";
+        $sql = "DELETE FROM `user` WHERE `usr_id` = :id";
                         
         $query = $pdo->prepare($sql);
 

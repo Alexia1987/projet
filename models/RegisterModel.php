@@ -5,34 +5,33 @@ $pdo = require_once __DIR__ . "/Database.php";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
-    if (isset ($_POST["register"]) && (!empty ($_POST["register"]))) {
+    if (isset ($_POST["register"])) {
 
         $email = ($_POST["email"]);
         $password_clear = ($_POST["password"]);
         $options = ['cost' => 12];
         $password_hashed = password_hash($password_clear, PASSWORD_BCRYPT, $options);
-        $lastname = ($_POST["lastname"]);
         $firstname = ($_POST["firstname"]); 
+        $lastname = ($_POST["lastname"]);     
         $phone_number = ($_POST["phone_number"]);
             
         try {
 
-            $sql = "INSERT INTO user(email, `password`, firstname, lastname, phone_number)
-                    VALUES(:email, :password, :firstname, :lastname, :phone_number)";
-                
+            $sql = "INSERT INTO `user`(`usr_role_id`, `usr_email`, `usr_password`, `usr_firstname`, `usr_lastname`, `usr_phonenumber`)
+                    VALUES(2, :email, :password, :firstname, :lastname, :phone_number)";
+
             $query = $pdo->prepare($sql);
 
             $result = $query->execute([
                 ':email' => $email,
                 ':password' => $password_hashed,
                 ':firstname' => $firstname,
-                ':lastname' => $lastname,        
+                ':lastname' => $lastname,
                 ':phone_number' => $phone_number
                 ]);
                 
                 if ($result) {
                     echo "Succès ! Votre compte a été crée.";
-                    header('Location: signup-ok.php');
                 } 
                 } 
                 

@@ -6,9 +6,9 @@ require_once __DIR__ . '/SettingModel.php';
 // retourne les horaires standards pour un jour donné (1=lundi ... 7=dimanche),
 // retourne null si le jour est fermé ou inexistant en BDD. 
 function getStandardHours(PDO $pdo, int $day): ?array {
-    $sql = "SELECT oh_open, oh_close 
-            FROM opening_hours 
-            WHERE oh_day = :day";
+    $sql = "SELECT `oh_open`, `oh_close`
+            FROM `opening_hours`
+            WHERE `oh_day` = :day";
     $query = $pdo->prepare($sql);
     $query->execute([':day' => $day]);
     $row = $query->fetch();
@@ -26,10 +26,10 @@ function getStandardHours(PDO $pdo, int $day): ?array {
 // retourne les horaires spéciaux pour une date (YYYY-MM-DD) et un jour de semaine,
 // retourne null si aucun horaire spécial ne couvre cette date pour ce jour.
 function getSpecialHours(PDO $pdo, string $date, int $day): ?array {
-    $sql = "SELECT sh_open, sh_close
-            FROM special_hours
-            WHERE :date BETWEEN sh_date_start AND sh_date_end
-              AND sh_day = :day
+    $sql = "SELECT `sh_open`, `sh_close`
+            FROM `special_hours`
+            WHERE :date BETWEEN `sh_date_start` AND `sh_date_end`
+              AND `sh_day` = :day
             LIMIT 1";
     $query = $pdo->prepare($sql);
     $query->execute([':date' => $date, ':day' => $day]);

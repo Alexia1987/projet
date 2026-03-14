@@ -15,7 +15,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
 
     try {
-        $sql = "SELECT * FROM user WHERE email = :email";
+        $sql = "SELECT * FROM `user` WHERE `usr_email` = :email";
 
         $query = $pdo->prepare($sql);
 
@@ -23,13 +23,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         $user = $query->fetch();
 
-        if 
-        ($user && password_verify($pwd_input, $user["password"])) {
+        if
+        ($user && password_verify($pwd_input, $user["usr_password"])) {
             session_regenerate_id(true);
 
-            $_SESSION["user_id"] = $user["id"];
-            $_SESSION["role_id"] = $user["role_id"];
-            $_SESSION["firstname"] = $user["firstname"];
+            $_SESSION["user_id"] = $user["usr_id"];
+            $_SESSION["role_id"] = $user["usr_role_id"];
+            $_SESSION["firstname"] = $user["usr_firstname"];
     
             echo "Bienvenue, vous êtes connecté !";
         } else {
@@ -37,7 +37,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
 
     } catch (PDOException $e){      
-        echo "Une erreur technique est survenue.";
+      echo "Une erreur technique est survenue.";
     }
 }
 

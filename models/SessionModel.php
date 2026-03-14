@@ -4,21 +4,21 @@ require_once __DIR__ . '/OpeningHoursModel.php';
 
 // Récupère toutes les sessions à venir avec leurs infos associées.
 function getUpcomingSessions(PDO $pdo): array {
-    $sql = "SELECT ses_id,
-                   ses_start_time,              -- Heure de début du créneau
-                   ses_end_time,                -- Heure de fin du créneau
-                   ses_capacity,                -- Nombre max de participants
-                   ses_price,                   -- Prix de la session
-                   ses_session_status,          -- Statut : scheduled / ongoing / completed / cancelled
-                   trk_name,                    -- Nom du circuit (via JOIN)
-                   COUNT(bkg_id) AS bkg_count   -- Nombre de réservations actives (hors annulées)
-            FROM session
-            JOIN track ON ses_track_id = trk_id             -- Récupère le nom du circuit lié
-            LEFT JOIN booking ON bkg_session_id = ses_id    -- Joint les réservations (LEFT = garde les sessions sans réservation)
-                AND bkg_booking_status NOT IN ('cancelled') -- Exclut les réservations annulées du comptage
-            WHERE ses_start_time >= NOW()                   -- Uniquement les sessions futures
-            GROUP BY ses_id                                 -- Nécessaire pour que COUNT() fonctionne par session 
-            ORDER BY ses_start_time ASC";                   // Date croissante (ASC)
+    $sql = "SELECT `ses_id`,
+                   `ses_start_time`,              -- Heure de début du créneau
+                   `ses_end_time`,                -- Heure de fin du créneau
+                   `ses_capacity`,                -- Nombre max de participants
+                   `ses_price`,                   -- Prix de la session
+                   `ses_session_status`,          -- Statut : scheduled / ongoing / completed / cancelled
+                   `trk_name`,                    -- Nom du circuit (via JOIN)
+                   COUNT(`bkg_id`) AS bkg_count   -- Nombre de réservations actives (hors annulées)
+            FROM `session`
+            JOIN `track` ON `ses_track_id` = `trk_id`             -- Récupère le nom du circuit lié
+            LEFT JOIN `booking` ON `bkg_session_id` = `ses_id`    -- Joint les réservations (LEFT = garde les sessions sans réservation)
+                AND `bkg_booking_status` NOT IN ('cancelled')      -- Exclut les réservations annulées du comptage
+            WHERE `ses_start_time` >= NOW()                        -- Uniquement les sessions futures
+            GROUP BY `ses_id`                                      -- Nécessaire pour que COUNT() fonctionne par session
+            ORDER BY `ses_start_time` ASC";                        // Date croissante (ASC)
 
     $query = $pdo->prepare($sql);
     $query->execute();
@@ -55,7 +55,7 @@ function defineSlotTimeRange(string $date, string $openTime, string $closeTime):
 // Les jours fermés sont ignorés. (getHoursForDate retourne null)
 function insertSlots(PDO $pdo, int $trackId, string $startDate, string $endDate, int $capacity, float $price): int {
 
-    $sql = "INSERT INTO session (ses_track_id, ses_start_time, ses_end_time, ses_capacity, ses_price, ses_session_status)
+    $sql = "INSERT INTO `session` (`ses_track_id`, `ses_start_time`, `ses_end_time`, `ses_capacity`, `ses_price`, `ses_session_status`)
             VALUES (:trk_id, :start_time, :end_time, :capacity, :price, 'scheduled')";
 
     // Itère jour par jour entre startDate et endDate (inclus)
@@ -112,7 +112,11 @@ function insertSlots(PDO $pdo, int $trackId, string $startDate, string $endDate,
 
 
 function getSlots(PDO $pdo): array {
-    $sql = "SELECT ses_start_time, ses_end_time FROM session ORDER BY ses_start_time ASC";
+    $sql = "SELECT `ses_id`, `ses_start_time`, `ses_end_time`, `ses_session_status`, `bkg_booking_status`
+            FROM `session`
+            LEFT JOIN `booking` ON `ses_id` = `bkg_session_id`
+            WHERE `ses_session_status` = 'scheduled'
+            ORDER BY `ses_start_time` ASC";
     $query = $pdo->prepare($sql);
     $query->execute();
     return $query->fetchAll();
