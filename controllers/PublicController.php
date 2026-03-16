@@ -6,7 +6,7 @@ require_once __DIR__ . "/AbstractController.php";
 class PublicController extends AbstractController {
 
     // Affiche la page d'accueil (views/pages/home.php)
-    public function displayHome(): void {
+    public function showHome(): void {
         $this->render('home');
     }
 }

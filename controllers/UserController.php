@@ -12,7 +12,7 @@ class UserController extends AbstractController {
     }
 
     // Affiche le profil de l'utilisateur connecté.
-    public function displayProfile(): void {
+    public function showProfile(): void {
         if (!isset($_SESSION['user_id'])) {
             $this->redirectToRoute('login');
         }
@@ -22,7 +22,7 @@ class UserController extends AbstractController {
     }
 
     // Gère la modification du profil (POST).
-    public function updateProfile(): void {
+    public function editProfile(): void {
         if (!isset($_SESSION['user_id'])) {
             $this->redirectToRoute('login');
         }
@@ -38,7 +38,7 @@ class UserController extends AbstractController {
             updateUser($this->pdo, $id, $email, $password, $firstname, $lastname, $phone_number);
         }
 
-        $this->redirectToRoute('user-profile');
+        $this->redirectToRoute('profile');
     }
 
     // Supprime le compte de l'utilisateur connecté (POST).
@@ -54,16 +54,36 @@ class UserController extends AbstractController {
             $this->redirectToRoute('home');
         }
 
-        $this->redirectToRoute('user-profile');
+        $this->redirectToRoute('profile');
+    }
+
+    // Crée un utilisateur (réservé à l'admin, POST).
+    public function createUser(): void {
+        if (!isset($_SESSION['role_id']) || $_SESSION['role_id'] !== 1) {
+            $this->redirectToRoute('home');
+        }
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $role_id      = (int)($_POST['role_id']     ?? 2);
+            $email        = trim($_POST['email']        ?? '');
+            $password     = trim($_POST['password']     ?? '');
+            $firstname    = trim($_POST['firstname']    ?? '');
+            $lastname     = trim($_POST['lastname']     ?? '');
+            $phone_number = trim($_POST['phone_number'] ?? '');
+
+            addUser($this->pdo, $role_id, $email, $password, $firstname, $lastname, $phone_number);
+        }
+
+        $this->redirectToRoute('admin/users');
     }
 
     // Affiche la liste de tous les utilisateurs (réservé à l'admin).
-    public function displayAllUsers(): void {
+    public function showAllUsers(): void {
         if (!isset($_SESSION['role_id']) || $_SESSION['role_id'] !== 1) {
             $this->redirectToRoute('home');
         }
 
         $users = getAllUsers($this->pdo);
-        $this->render('users', ['users' => $users]);
+        $this->render('admin-users', ['users' => $users]);
     }
 }

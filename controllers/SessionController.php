@@ -15,7 +15,7 @@ class SessionController extends AbstractController {
         return insertSlots($this->pdo, 2, $startDate, $endDate, 10, 25.0);
     }
 
-    public function displaySlotsInCalendar(): void {
+    public function showCalendar(): void {
         $slots = getSlots($this->pdo);
         $this->render('calendar', ['slots' => $slots]);
     }
