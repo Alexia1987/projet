@@ -48,9 +48,9 @@ function registerUser($pdo, $email, $password_clear, $firstname, $lastname, $pho
             ':phone_number' => $phone_number
         ]);
 
-        return $result ? "Votre compte a été créé avec succès." : "Une erreur technique est survenue.";
+        return $result ? "Votre compte a été créé avec succès." : "Une erreur technique est survenue."; // (ex: la requête SQL a échoué)
 
     } catch (PDOException $e) {
-        return "Une erreur technique est survenue.";
+        return "Une erreur technique est survenue."; // (ex: connexion perdue)
     }
 }
