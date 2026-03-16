@@ -10,4 +10,25 @@ class RegisterController extends AbstractController {
     public function __construct() {
         $this->pdo = require_once __DIR__ . "/../models/Database.php";
     }
+
+    // Affiche le formulaire d'inscription (GET) et traite la soumission (POST).
+    public function showRegister(): void {
+        $message = "";
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $email        = trim($_POST['email']        ?? '');
+            $password     = trim($_POST['password']     ?? '');
+            $firstname    = trim($_POST['firstname']    ?? '');
+            $lastname     = trim($_POST['lastname']     ?? '');
+            $phone_number = trim($_POST['phone_number'] ?? '');
+
+            $error = registerUser($this->pdo, $email, $password, $firstname, $lastname, $phone_number);
+
+            if ($error === null) {
+                $this->redirectToRoute('login');
+            }
+        }
+
+        $this->render('register', ['error' => $error ?? null]);
+    }
 }
