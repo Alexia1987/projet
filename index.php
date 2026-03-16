@@ -1,9 +1,13 @@
 <?php
 session_start();
-require_once "./controllers/HomeController.php";
+require_once "./controllers/PublicController.php";
 require_once "./controllers/SessionController.php";
-$homeController = new HomeController("","","","","");
+require_once "./controllers/MainController.php";
+require_once "./controllers/UserController.php";
+$publicController  = new PublicController();
 $sessionController = new SessionController();
+$mainController    = new MainController();
+$userController    = new UserController();
 
 
 // 1. Définition de la fonction de sécurité
@@ -21,39 +25,73 @@ function getSafeUrl($raw_input) {
     // 4. On retire les slashs superflus aux extrémités
     $safe_url = trim($clean_input, '/');
 
-    // 4. Si c'est vide on retourne un tableau vide
+    // 5. Si c'est vide on retourne un tableau vide
     //    Sinon, on découpe et on retourne le tableau
     return empty($safe_url) ? [] : explode('/', $safe_url);
 }
 
-// 5. Si $_GET['page'] est vide, on force un tableau avec 'home'
+// 6. Si $_GET['page'] est vide, on force un tableau avec 'home'
 $url = (isset($_GET['page']) && !empty($_GET['page'])) ? getSafeUrl($_GET['page']) : ['home'];
 
-// 6. On reconstruit la route complète (ex: "session/create-slots")
+// 7. On reconstruit la route complète (ex: "admin/users")
 $pageRequest = implode('/', $url);
 
-// 7. Liste blanche des pages autorisées
+// 8. Liste blanche des pages autorisées
 // (Pour éviter l'inclusion de fichiers sensibles)
-$allowed = ['home', 'calendar', 'create-slots', 'register'];
+$allowed = [
+    'home', 'login', 'logout', 'register', 'calendar',
+    'profile', 'profile/edit', 'profile/delete',
+    'admin/users', 'admin/add-user', 'admin/create-slots',
+];
 
-switch ($pageRequest){
+switch ($pageRequest) {
+
     case 'home':
-    $homeController->displayHome();
-    break;  
+    $publicController->showHome();
+    break;
+
+    case 'login':
+    // TODO: $mainController->showLogin();
+    break;
+
+    case 'logout':
+    $mainController->logout();
+    break;
+
+    case 'register':
+    // TODO: $registerController->showRegister();
+    break;
 
     case 'calendar':
-    $sessionController->displaySlotsInCalendar($pdo);
+    $sessionController->showCalendar();
     break;
 
-    case 'create-slots':
-    $count = $sessionController->generateSlots($pdo, '2026-03-11', '2026-03-31');
+    case 'profile':
+    $userController->showProfile();
+    break;
+
+    case 'profile/edit':
+    $userController->editProfile();
+    break;
+
+    case 'profile/delete':
+    $userController->deleteAccount();
+    break;
+
+    case 'admin/users':
+    $userController->showAllUsers();
+    break;
+
+    case 'admin/add-user':
+    $userController->createUser();
+    break;
+
+    case 'admin/create-slots':
+    $count = $sessionController->generateSlots('2026-03-11', '2026-03-31');
     echo "$count créneaux générés.";
     break;
-    
+
     default:
-        echo "Page non trouvée";
-        break;
+    echo "Page non trouvée";
+    break;
 }
-
-
-
