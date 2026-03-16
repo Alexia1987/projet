@@ -1,20 +1,8 @@
-<?php 
+<?php
 
-class UserController {
-    // propriétés de la classe 
-    private $email;
-    private $password;
-    private $lastname;
-    private $firstname;
-    private $phonenumber;
+require_once __DIR__ . "/AbstractController.php";
 
-    public function __construct ($email, $password, $lastname, $firstname, $phonenumber) // ces variables correspondent aux 
-    // données de l'utilisateur que l'on récupère
-    {
-        $this->email = $email;
-        $this->password = $password;
-        $this->lastname = $lastname;
-        $this->firstname = $firstname;
-        $this->phonenumber = $phonenumber;
-    }
+class UserController extends AbstractController {
+
+    // Actions liées à l'utilisateur (profil, modification, etc.)
 }
