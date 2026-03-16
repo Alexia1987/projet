@@ -1,6 +1,5 @@
 <?php
 
-$pdo = require_once __DIR__ . "/Database.php";
 require_once __DIR__ . "/../functions/validator.php";
 
 // ---READ---
@@ -21,44 +20,24 @@ function getOneUser($pdo, $id)
 }
 
 // ---CREATE---
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-
-    if (isset ($_POST["add"]) && (!empty ($_POST["add"]))) {
-        $role_id      = (int)$_POST["role_id"];
-        $email        = $_POST["email"];
-        $clearPassword = $_POST["password"];        
-        $firstname    = $_POST["firstname"];
-        $lastname     = $_POST["lastname"];
-        $phone_number = $_POST["phone_number"];
-
-        addUser($pdo, $role_id, $email, $clearPassword, $firstname, $lastname, $phone_number);
-    }
-    }
-
 function addUser($pdo, $role_id, $email, $clearPassword, $firstname, $lastname, $phone_number) {
     try {
-        $message = "";
-
+       
         // Validation des champs.
-        if (!isEmailValid($email)) {
-            $message = "L'adresse email est invalide.";
-            return;
+        if (!isEmailValid($email)) {            
+            return "L'adresse email est invalide.";
         }
         if (!isPasswordStrong($clearPassword)) {
-            $message = "Le mot de passe doit contenir entre 12 et 20 caractères, avec au moins une majuscule, une minuscule, un chiffre et un caractère spécial (@$!%*?&).";
-            return;
+            return "Le mot de passe doit contenir entre 12 et 20 caractères, avec au moins une majuscule, une minuscule, un chiffre et un caractère spécial (@$!%*?&).";
         }
         if (!isNameValid($firstname)) {
-            $message = "Le prénom est invalide.";
-            return;
+            return "Le prénom est invalide.";
         }
         if (!isNameValid($lastname)) {
-            $message = "Le nom est invalide.";
-            return;
+            return "Le nom est invalide.";
         }
         if (!isPhoneValid($phone_number)) {
-            $message = "Le numéro de téléphone est invalide.";
-            return;
+            return "Le numéro de téléphone est invalide.";
         }
 
         // Vérifie si l'email existe déjà en base.
@@ -67,7 +46,7 @@ function addUser($pdo, $role_id, $email, $clearPassword, $firstname, $lastname, 
         $checkEmailQuery->execute([':email' => $email]);
 
         if ($checkEmailQuery->fetchColumn() > 0) {
-            $message = "Cette adresse email est déjà utilisée.";
+            return "Cette adresse email est déjà utilisée.";
         } else {
             // Hachage du mot de passe (uniquement si l'email est disponible).
             $options = ['cost' => 12];
@@ -87,36 +66,20 @@ function addUser($pdo, $role_id, $email, $clearPassword, $firstname, $lastname, 
                 ':phone_number' => $phone_number
             ]);
 
-            if ($result) {
-                $message = "Votre compte a été crée avec succès.";
-            }
+        return $result ? "Votre compte a été créé avec succès." : "Une erreur technique est survenue.";
         }
 
     } catch (PDOException $e) {
-        $message = "Une erreur technique est survenue.";
+
+        return "Une erreur technique est survenue.";
     }
 }
 
 
 // ---UPDATE---
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-
-    if (isset ($_POST['edit'])) {
-        // Récupération des données (et de l'ID via un champ caché ou la session)
-        $id = (int)$_POST['id'];
-        $email = trim($_POST['email']);
-        $password = trim($_POST['password']);
-        $firstname = trim($_POST['firstname']); 
-        $lastname = trim($_POST['lastname']);  
-        $phone_number = trim($_POST['phone_number']);
-
-        updateUser($pdo, $id, $email, $password, $firstname, $lastname, $phone_number);
-    }
-    }
-
-function updateUser($pdo, $id, $email, $password, $firstname, $lastname, $phone_number) {   
+function updateUser($pdo, $id, $email, $password, $firstname, $lastname, $phone_number) {
     try {
-        $message = "";
+        
         $options = ['cost' => 12];
         $hashedPassword = password_hash($password, PASSWORD_BCRYPT, $options);
 
@@ -131,49 +94,35 @@ function updateUser($pdo, $id, $email, $password, $firstname, $lastname, $phone_
         $query = $pdo->prepare($sql);
 
         $result = $query->execute([
-            ':id' => $id,
-            ':email' => $email,
-            ':password' => $hashedPassword,
-            ':firstname' => $firstname,
-            ':lastname' => $lastname,        
+            ':id'           => $id,
+            ':email'        => $email,
+            ':password'     => $hashedPassword,
+            ':firstname'    => $firstname,
+            ':lastname'     => $lastname,
             ':phone_number' => $phone_number
-            ]);
-            
-        if ($result) {
-            $message =  "Votre compte a bien été modifié.";            
-            } 
+        ]);
+
+        return $result ? "Votre compte a été modifié avec succès." : "Une erreur technique est survenue.";
 
     } catch (PDOException $e) {
-        $message =  "Une erreur technique est survenue.";
-}
+        return "Une erreur technique est survenue.";
+    }
 }
 
 
 // ---DELETE---
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        if (isset($_POST["delete"])) {
-            $id = (int)$_POST['id'];
-            deleteUser($pdo, $id);
-}
-}
-
-function deleteUser($pdo, $id) {           
+function deleteUser($pdo, $id) {
     try {
-        $message = "";
+
         $sql = "DELETE FROM `user` WHERE `usr_id` = :id";
-                        
+
         $query = $pdo->prepare($sql);
 
         $result = $query->execute([':id' => $id]);
-                        
-        if ($result) {
-        $message =  "Votre compte a été supprimé.";                
-        } 
-                        
-    } catch (PDOException $e) {
-        $message =  "Une erreur technique est survenue.";            
-    }       
-    }
-        
 
-            
+        return $result ? "Votre compte a été supprimé définitivement." : "Une erreur technique est survenue.";
+
+    } catch (PDOException $e) {
+        return "Une erreur technique est survenue.";
+    }
+}
