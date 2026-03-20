@@ -13,7 +13,7 @@ class RegisterController extends AbstractController {
 
     // Affiche le formulaire d'inscription (GET) et traite la soumission (POST).
     public function showRegister(): void {
-        $message = "";
+        $error = null;
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $email        = trim($_POST['email']        ?? '');
