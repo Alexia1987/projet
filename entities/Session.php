@@ -1,7 +1,5 @@
 <?php
 
-namespace Entity;
-
 class Session {
     
     private int $id;

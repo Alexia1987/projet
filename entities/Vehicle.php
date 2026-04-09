@@ -1,7 +1,5 @@
 <?php
 
-namespace Entity;
-
 class Vehicle {
 
     private int $id;

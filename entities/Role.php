@@ -1,7 +1,5 @@
 <?php
 
-namespace Entity;
-
 class Role {
 
     private int $id;

@@ -1,7 +1,5 @@
 <?php
 
-namespace Entity;
-
 class Track {
 
     private int $id;
@@ -20,37 +18,37 @@ class Track {
         return $this->id;
     }
 
-    public function setName ( string $name ) : void
+    public function setName( string $name ) : void
     {
         $this->name = $name;
     }
 
-    public function getName () : string
+    public function getName() : string
     {
         return $this->name;
     }
 
-    public function setDescription ( string $description ) : void
+    public function setDescription( string $description ) : void
     {
         $this->description = $description;
     }
 
-    public function getDescription () : string
+    public function getDescription() : string
     {
         return $this->description;
     }
 
-    public function setLenghtMeters ( string $lenghtMeters ) : void
+    public function setLenghtMeters( string $lenghtMeters ) : void
     {
         $this->lenght_meters = $lenghtMeters;
     }
 
-    public function getLenghtMeters () : int
+    public function getLenghtMeters() : int
     {
         return $this->lenght_meters;
     }
 
-     public function setIsActive ( string $isActive ) : void
+     public function setIsActive( string $isActive ) : void
     {
         $this->is_active = $isActive;
     }

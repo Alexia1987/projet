@@ -1,7 +1,5 @@
 <?php
 
-namespace Entity;
-
 class Payment {
 
     private int $id;

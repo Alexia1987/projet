@@ -1,9 +1,7 @@
 <?php
 
-namespace Entity;
-
-use Entity\Session;
-use Entity\Vehicle;
+use Session;
+use Vehicle;
 
 class SessionVehicle {
 
