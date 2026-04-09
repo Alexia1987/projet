@@ -13,8 +13,8 @@ function getUpcomingSessions(PDO $pdo): array {
                    `trk_name`,                    -- Nom du circuit (via JOIN)
                    COUNT(`bkg_id`) AS bkg_count   -- Nombre de réservations actives (hors annulées)
             FROM `session`
-            JOIN `track` ON `ses_track_id` = `trk_id`             -- Récupère le nom du circuit lié
-            LEFT JOIN `booking` ON `bkg_session_id` = `ses_id`    -- Joint les réservations (LEFT = garde les sessions sans réservation)
+            JOIN `track` ON `ses_track_id` = `trk_id`              -- Récupère le nom du circuit lié
+            LEFT JOIN `booking` ON `bkg_session_id` = `ses_id`     -- Joint les réservations (LEFT = garde les sessions sans réservation)
                 AND `bkg_booking_status` NOT IN ('cancelled')      -- Exclut les réservations annulées du comptage
             WHERE `ses_start_time` >= NOW()                        -- Uniquement les sessions futures
             GROUP BY `ses_id`                                      -- Nécessaire pour que COUNT() fonctionne par session
@@ -112,12 +112,34 @@ function insertSlots(PDO $pdo, int $trackId, string $startDate, string $endDate,
 
 
 function getSlots(PDO $pdo): array {
-    $sql = "SELECT `ses_id`, `ses_start_time`, `ses_end_time`, `ses_session_status`, `bkg_booking_status`
+    $sql = "SELECT `ses_id`, `ses_start_time`, `ses_end_time`, `ses_session_status`
             FROM `session`
-            LEFT JOIN `booking` ON `ses_id` = `bkg_session_id`
             WHERE `ses_session_status` = 'scheduled'
             ORDER BY `ses_start_time` ASC";
     $query = $pdo->prepare($sql);
     $query->execute();
     return $query->fetchAll();
+}
+
+
+function getRemainingPlaces(PDO $pdo): array {
+    $sql = "SELECT `ses_id`,
+                   `ses_capacity`,
+                   `ses_session_status`,
+                   COALESCE(SUM(`bkg_nb_of_participants`), 0) AS participants_count
+            FROM `session`
+            LEFT JOIN `booking` ON `ses_id` = `bkg_session_id`
+                AND `bkg_booking_status` NOT IN ('cancelled')
+            GROUP BY `ses_id`";
+
+    $query = $pdo->prepare($sql);
+    $query->execute();
+    $sessions = $query->fetchAll();
+
+    $remainingPlaces = [];
+    foreach ($sessions as $session) {
+        $remainingPlaces[$session['ses_id']] = $session['ses_capacity'] - $session['participants_count'];
+    }
+
+    return $remainingPlaces;
 }
