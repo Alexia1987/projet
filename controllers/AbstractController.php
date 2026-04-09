@@ -3,8 +3,8 @@
 // Classe abstraite : elle ne peut pas être instanciée directement (pas de "new AbstractController()").
 // Chaque contrôleur l'étend avec "extends AbstractController" et hérite ainsi de ses méthodes.
 
-abstract class AbstractController {
-
+abstract class AbstractController
+{
     // "protected" : accessible depuis cette classe ET depuis les classes filles (PublicController, etc.)
     // mais pas depuis l'extérieur.
     // $page    : nom du fichier de vue sans extension (ex: 'home' → views/pages/home.php)

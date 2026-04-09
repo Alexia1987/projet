@@ -3,16 +3,18 @@
 require_once __DIR__ . "/AbstractController.php";
 require_once __DIR__ . "/../models/UserModel.php";
 
-class UserController extends AbstractController {
-
+class UserController extends AbstractController
+{
     private PDO $pdo;
 
-    public function __construct() {
-        $this->pdo = require_once __DIR__ . "/../models/Database.php";
+    public function __construct()
+    {
+        $this->pdo = require __DIR__ . "/../models/Database.php";
     }
 
     // Affiche le profil de l'utilisateur connecté.
-    public function showProfile(): void {
+    public function showProfile(): void
+    {
         if (!isset($_SESSION['user_id'])) {
             $this->redirectToRoute('login');
         }
@@ -22,7 +24,8 @@ class UserController extends AbstractController {
     }
 
     // Gère la modification du profil (POST).
-    public function editProfile(): void {
+    public function editProfile(): void
+    {
         if (!isset($_SESSION['user_id'])) {
             $this->redirectToRoute('login');
         }
@@ -42,7 +45,8 @@ class UserController extends AbstractController {
     }
 
     // Supprime le compte de l'utilisateur connecté (POST).
-    public function deleteAccount(): void {
+    public function deleteAccount(): void
+    {
         if (!isset($_SESSION['user_id'])) {
             $this->redirectToRoute('login');
         }
@@ -58,7 +62,8 @@ class UserController extends AbstractController {
     }
 
     // Crée un utilisateur (réservé à l'admin, POST).
-    public function createUser(): void {
+    public function createUser(): void
+    {
         if (!isset($_SESSION['role_id']) || $_SESSION['role_id'] !== 1) {
             $this->redirectToRoute('home');
         }
@@ -78,7 +83,8 @@ class UserController extends AbstractController {
     }
 
     // Affiche la liste de tous les utilisateurs (réservé à l'admin).
-    public function showAllUsers(): void {
+    public function showAllUsers(): void
+    {
         if (!isset($_SESSION['role_id']) || $_SESSION['role_id'] !== 1) {
             $this->redirectToRoute('home');
         }
