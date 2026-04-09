@@ -21,6 +21,30 @@ class SessionController extends AbstractController
     {
         $slots     = getSlots($this->pdo);
         $remaining = getRemainingPlaces($this->pdo);
-        $this->render('calendar', ['slots' => $slots, 'remaining' => $remaining]);
+
+        $events = array_map(function ($slot) use ($remaining) {
+            $places = $remaining[$slot['ses_id']] ?? 0;
+
+            if ($places === 0) {
+                $color = '#ef4444';
+                $title = 'Complet';
+            } elseif ($places <= 6) {
+                $color = '#ee7e27';
+                $title = $places . ' place' . ($places > 1 ? 's' : '') . ' restante' . ($places > 1 ? 's' : '');
+            } else {
+                $color = '#51b39a';
+                $title = $places . ' places restantes';
+            }
+
+            return [
+                'title'           => $title,
+                'start'           => $slot['ses_start_time'],
+                'end'             => $slot['ses_end_time'],
+                'backgroundColor' => $color,
+                'borderColor'     => $color,
+            ];
+        }, $slots);
+
+        $this->render('calendar', ['events' => $events]);
     }
 }

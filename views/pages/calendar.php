@@ -1,31 +1,4 @@
-<?php
-include_once __DIR__ . '/../components/_header.php';
-
-// Convertit les sessions PHP en tableau d'événements FullCalendar
-$events = array_map(function ($slot) use ($remaining) {
-    $places = $remaining[$slot['ses_id']] ?? 0;
-
-    if ($places === 0) {
-        $color = '#ef4444';   // Rouge - complet
-        $title = 'Complet';
-    } elseif ($places <= 6) {
-        $color = '#ee7e27';   // Orange - moins de la moitié
-        $title = $places . ' place' . ($places > 1 ? 's' : '') . ' restante' . ($places > 1 ? 's' : '');
-    } else {
-        $color = '#51b39a' ;   // Vert - disponible '#22c55e'
-        $title = $places . ' places restantes';
-    }
-
-    return [
-        'title'           => $title,
-        'start'           => $slot['ses_start_time'],
-        'end'             => $slot['ses_end_time'],
-        'backgroundColor' => $color,
-        'borderColor'     => $color
-    ];
-}, $slots ?? []);
-
-?>
+<?php include_once __DIR__ . '/../components/_header.php'; ?>
 
 <!-- Calendrier FullCalendar -->
 <main id="fullcalendar-section">
@@ -104,6 +77,11 @@ $events = array_map(function ($slot) use ($remaining) {
 
         // Au clic sur le bouton 'X'
         document.getElementById('event-modal-close').addEventListener('click', function() {
+            modal.classList.add('hidden');
+        });
+
+         // Au clic sur le bouton Annuler
+        document.getElementById('event-modal-cancel').addEventListener('click', function() {
             modal.classList.add('hidden');
         });
 
