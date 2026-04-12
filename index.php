@@ -15,21 +15,21 @@ $userController     = new UserController();
 // 1. Définition de la fonction de sécurité
 //    (raw_$input = la donnée provenant de $_GET)
 
-function getSafeUrl($raw_input) {
+function getSafeUrl($rawInput) {
 
     // 2. On retire les espaces vides au début et à la fin
-    $raw_input = trim($raw_input);
+    $rawInput = trim($rawInput);
 
     // 3. On supprime les caractères potentiellement dangereux (failles XSS)
     //    (On garde l'essentiel : lettres, chiffres, slash, tiret, underscore et point)
-    $clean_input = preg_replace('/[^a-zA-Z0-9\/._-]/', '', $raw_input);
+    $cleanInput = preg_replace('/[^a-zA-Z0-9\/._-]/', '', $rawInput);
 
     // 4. On retire les slashs superflus aux extrémités
-    $safe_url = trim($clean_input, '/');
+    $safeUrl = trim($cleanInput, '/');
 
     // 5. Si c'est vide on retourne un tableau vide
     //    Sinon, on découpe et on retourne le tableau
-    return empty($safe_url) ? [] : explode('/', $safe_url);
+    return empty($safeUrl) ? [] : explode('/', $safeUrl);
 }
 
 // 6. Si $_GET['page'] est vide, on force un tableau avec 'home'

@@ -22,9 +22,9 @@ class RegisterController extends AbstractController
             $password     = ($_POST['password']     ?? '');
             $firstname    = trim($_POST['firstname']    ?? '');
             $lastname     = trim($_POST['lastname']     ?? '');
-            $phone_number = trim($_POST['phone_number'] ?? '');
+            $phoneNumber = trim($_POST['phone_number'] ?? '');
 
-            $error = registerUser($this->pdo, $email, $password, $firstname, $lastname, $phone_number);
+            $error = registerUser($this->pdo, $email, $password, $firstname, $lastname, $phoneNumber);
 
             if ($error === null) {
                 $this->redirectToRoute('login');

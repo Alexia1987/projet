@@ -37,11 +37,15 @@ class SessionController extends AbstractController
             }
 
             return [
+                'id'              => $slot['ses_id'],
                 'title'           => $title,
                 'start'           => $slot['ses_start_time'],
                 'end'             => $slot['ses_end_time'],
                 'backgroundColor' => $color,
                 'borderColor'     => $color,
+                'extendedProps'   => [
+                    'price' => $slot['ses_price'],
+                ],
             ];
         }, $slots);
 

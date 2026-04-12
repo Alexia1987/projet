@@ -13,7 +13,7 @@
                                         
                     <li class="flex items-center w-fit px-3">    
                         <button class="flex items-center text-neutral-50">Découvrir</button> <!--présentation générale du complexe, sécurité (encadrement), karts modernes homologués PMR, pistes par niveau-->  
-                        <img class="size-7" src="../../img/icons/down-square-svgrepo-com.svg" alt="">
+                        <img class="size-7" src="/projetFin/img/icons/down-square-svgrepo-com.svg" alt="">
                        
                         <ul class="hidden">
                             <li class="">
@@ -30,7 +30,7 @@
 
                     <li class="flex items-center w-fit px-3">                                           
                         <button class="text-neutral-50">Nos formules</button>
-                        <img class="size-7" src="../../img/icons/down-square-svgrepo-com.svg" alt="">  
+                        <img class="size-7" src="/projetFin/img/icons/down-square-svgrepo-com.svg" alt="">  
                         
                         <ul class="hidden">
                             <li>
@@ -47,7 +47,7 @@
               
                     <li class="flex items-center w-fit px-3">                                         
                         <button class="flex items-center text-neutral-50">Infos pratiques</button>  
-                        <img class="size-7" src="../../img/icons/down-square-svgrepo-com.svg" alt="">
+                        <img class="size-7" src="/projetFin/img/icons/down-square-svgrepo-com.svg" alt="">
                          
                         <ul class="hidden">
                             <li>

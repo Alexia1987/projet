@@ -2,14 +2,14 @@
 
 require_once __DIR__ . "/../functions/validator.php";
 
-function registerUser($pdo, $email, $password_clear, $firstname, $lastname, $phone_number): ?string
+function registerUser($pdo, $email, $passwordClear, $firstname, $lastname, $phoneNumber): ?string
 {
     try {
         // Validation des champs.
         if (!isEmailValid($email)) {
             return "L'adresse email est invalide.";
         }
-        if (!isPasswordStrong($password_clear)) {
+        if (!isPasswordStrong($passwordClear)) {
             return "Le mot de passe doit contenir entre 12 et 20 caractères, avec au moins une majuscule, une minuscule, un chiffre et un caractère spécial (@$!%*?&).";
         }
         if (!isNameValid($firstname)) {
@@ -18,7 +18,7 @@ function registerUser($pdo, $email, $password_clear, $firstname, $lastname, $pho
         if (!isNameValid($lastname)) {
             return "Le nom est invalide.";
         }
-        if (!isPhoneValid($phone_number)) {
+        if (!isPhoneValid($phoneNumber)) {
             return "Le numéro de téléphone est invalide.";
         }
 
@@ -33,7 +33,7 @@ function registerUser($pdo, $email, $password_clear, $firstname, $lastname, $pho
 
         // Hachage du mot de passe.
         $options = ['cost' => 12];
-        $password_hashed = password_hash($password_clear, PASSWORD_DEFAULT, $options);
+        $passwordHashed = password_hash($passwordClear, PASSWORD_DEFAULT, $options);
 
         $sql = "INSERT INTO `user`(`usr_role_id`, `usr_email`, `usr_password`, `usr_firstname`, `usr_lastname`, `usr_phonenumber`)
                 VALUES(2, :email, :password, :firstname, :lastname, :phone_number)";
@@ -42,10 +42,10 @@ function registerUser($pdo, $email, $password_clear, $firstname, $lastname, $pho
 
         $result = $query->execute([
             ':email'        => $email,
-            ':password'     => $password_hashed,
+            ':password'     => $passwordHashed,
             ':firstname'    => $firstname,
             ':lastname'     => $lastname,
-            ':phone_number' => $phone_number
+            ':phone_number' => $phoneNumber
         ]);
 
         return $result ? null : "Une erreur technique est survenue."; // (ex: la requête SQL a échoué)

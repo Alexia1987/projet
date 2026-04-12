@@ -17,8 +17,8 @@ function isNameValid($name) {
     return preg_match($nameRegex, $name);
 }
 
-function isPhoneValid($phone_number) {
-    $phone_number = trim($phone_number);
+function isPhoneValid($phoneNumber) {
+    $phoneNumber = trim($phoneNumber);
     $phoneRegex = '/^0[1-9][0-9]{8}$/';
-    return preg_match($phoneRegex, $phone_number);
+    return preg_match($phoneRegex, $phoneNumber);
 }

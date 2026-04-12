@@ -36,9 +36,9 @@ class UserController extends AbstractController
             $password     = trim($_POST['password']     ?? '');
             $firstname    = trim($_POST['firstname']    ?? '');
             $lastname     = trim($_POST['lastname']     ?? '');
-            $phone_number = trim($_POST['phone_number'] ?? '');
+            $phoneNumber = trim($_POST['phone_number'] ?? '');
 
-            updateUser($this->pdo, $id, $email, $password, $firstname, $lastname, $phone_number);
+            updateUser($this->pdo, $id, $email, $password, $firstname, $lastname, $phoneNumber);
         }
 
         $this->redirectToRoute('profile');
@@ -69,14 +69,14 @@ class UserController extends AbstractController
         }
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $role_id      = (int)($_POST['role_id']     ?? 2);
+            $roleId       = (int)($_POST['role_id']     ?? 2);
             $email        = trim($_POST['email']        ?? '');
             $password     = trim($_POST['password']     ?? '');
             $firstname    = trim($_POST['firstname']    ?? '');
             $lastname     = trim($_POST['lastname']     ?? '');
-            $phone_number = trim($_POST['phone_number'] ?? '');
+            $phoneNumber  = trim($_POST['phone_number'] ?? '');
 
-            addUser($this->pdo, $role_id, $email, $password, $firstname, $lastname, $phone_number);
+            addUser($this->pdo, $roleId, $email, $password, $firstname, $lastname, $phoneNumber);
         }
 
         $this->redirectToRoute('admin/users');
