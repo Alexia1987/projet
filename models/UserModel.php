@@ -20,7 +20,7 @@ function getOneUser($pdo, $id)
 }
 
 // ---CREATE---
-function addUser($pdo, $role_id, $email, $clearPassword, $firstname, $lastname, $phone_number) {
+function addUser($pdo, $roleId, $email, $clearPassword, $firstname, $lastname, $phoneNumber) {
     try {
        
         // Validation des champs.
@@ -36,7 +36,7 @@ function addUser($pdo, $role_id, $email, $clearPassword, $firstname, $lastname, 
         if (!isNameValid($lastname)) {
             return "Le nom est invalide.";
         }
-        if (!isPhoneValid($phone_number)) {
+        if (!isPhoneValid($phoneNumber)) {
             return "Le numéro de téléphone est invalide.";
         }
 
@@ -58,12 +58,12 @@ function addUser($pdo, $role_id, $email, $clearPassword, $firstname, $lastname, 
             $query = $pdo->prepare($sql);
 
             $result = $query->execute([
-                ':role_id'      => $role_id,
+                ':role_id'      => $roleId,
                 ':email'        => $email,
                 ':password'     => $hashedPassword,
                 ':firstname'    => $firstname,
                 ':lastname'     => $lastname,
-                ':phone_number' => $phone_number
+                ':phone_number' => $phoneNumber
             ]);
 
         return $result ? "Votre compte a été créé avec succès." : "Une erreur technique est survenue.";
@@ -77,7 +77,7 @@ function addUser($pdo, $role_id, $email, $clearPassword, $firstname, $lastname, 
 
 
 // ---UPDATE---
-function updateUser($pdo, $id, $email, $password, $firstname, $lastname, $phone_number) {
+function updateUser($pdo, $id, $email, $password, $firstname, $lastname, $phoneNumber) {
     try {
         
         $options = ['cost' => 12];
@@ -99,7 +99,7 @@ function updateUser($pdo, $id, $email, $password, $firstname, $lastname, $phone_
             ':password'     => $hashedPassword,
             ':firstname'    => $firstname,
             ':lastname'     => $lastname,
-            ':phone_number' => $phone_number
+            ':phone_number' => $phoneNumber
         ]);
 
         return $result ? "Votre compte a été modifié avec succès." : "Une erreur technique est survenue.";

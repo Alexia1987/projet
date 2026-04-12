@@ -112,7 +112,7 @@ function insertSlots(PDO $pdo, int $trackId, string $startDate, string $endDate,
 
 
 function getSlots(PDO $pdo): array {
-    $sql = "SELECT `ses_id`, `ses_start_time`, `ses_end_time`, `ses_session_status`
+    $sql = "SELECT `ses_id`, `ses_start_time`, `ses_end_time`, `ses_session_status`, `ses_price`
             FROM `session`
             WHERE `ses_session_status` = 'scheduled'
             ORDER BY `ses_start_time` ASC";
@@ -142,4 +142,25 @@ function getRemainingPlaces(PDO $pdo): array {
     }
 
     return $remainingPlaces;
+}
+
+
+function addBooking(PDO $pdo, $userId, $sessionId, $participants) {
+    try {
+        $sql = "INSERT INTO `booking`(`bkg_user_id`, `bkg_session_id`, `bkg_nb_of_participants`)
+                        VALUES(:user_id, :session_id, :participants)";
+
+        $query = $pdo->prepare($sql);
+
+        $result = $query->execute([
+            ':user_id'      => $userId,
+            ':session_id'   => $sessionId,
+            ':participants' => $participants
+        ]);
+            return $result ? "Votre réservation a été effectuée avec succès." : "Une erreur technique est survenue.";
+
+    } catch (PDOException $e) {
+
+        return "Une erreur technique est survenue.";
+}
 }
