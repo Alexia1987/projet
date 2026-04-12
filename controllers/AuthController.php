@@ -3,7 +3,7 @@
 require_once __DIR__ . "/AbstractController.php";
 require_once __DIR__ . "/../models/AuthModel.php";
 
-class MainController extends AbstractController
+class AuthController extends AbstractController
 {
     private PDO $pdo;
 

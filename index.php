@@ -1,13 +1,15 @@
 <?php
 session_start();
+require_once "./controllers/AuthController.php";
 require_once "./controllers/PublicController.php";
+require_once "./controllers/RegisterController.php";
 require_once "./controllers/SessionController.php";
-require_once "./controllers/MainController.php";
 require_once "./controllers/UserController.php";
-$publicController  = new PublicController();
-$sessionController = new SessionController();
-$mainController    = new MainController();
-$userController    = new UserController();
+$authController     = new AuthController();
+$publicController   = new PublicController();
+$registerController = new RegisterController();
+$sessionController  = new SessionController();
+$userController     = new UserController();
 
 
 // 1. Définition de la fonction de sécurité
@@ -44,6 +46,12 @@ $allowed = [
     'admin/users', 'admin/add-user', 'admin/create-slots',
 ];
 
+if (!in_array($pageRequest, $allowed)) {
+    http_response_code(404);
+    echo "Page non trouvée";
+    exit;
+}
+
 switch ($pageRequest) {
 
     case 'home':
@@ -51,15 +59,15 @@ switch ($pageRequest) {
     break;
 
     case 'login':
-    // TODO: $mainController->showLogin();
+    $authController->login();
     break;
 
     case 'logout':
-    $mainController->logout();
+    $authController->logout();
     break;
 
     case 'register':
-    // TODO: $registerController->showRegister();
+    $registerController->showRegister();
     break;
 
     case 'calendar':
@@ -87,7 +95,7 @@ switch ($pageRequest) {
     break;
 
     case 'admin/create-slots':
-    $count = $sessionController->generateSlots('2026-03-11', '2026-03-31');
+    $count = $sessionController->generateSlots('2026-04-01', '2026-04-30');
     echo "$count créneaux générés.";
     break;
 
