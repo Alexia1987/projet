@@ -23,25 +23,32 @@ class UserController extends AbstractController
         $this->render('user-profile', ['user' => $user]);
     }
 
-    // Gère la modification du profil (POST).
+    // Gère la modification du profil (GET → formulaire, POST → traitement).
     public function editProfile(): void
     {
         if (!isset($_SESSION['user_id'])) {
             $this->redirectToRoute('login');
         }
 
+        $user  = getOneUser($this->pdo, $_SESSION['user_id']);
+        $error = null;
+
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $id           = $_SESSION['user_id'];
-            $email        = trim($_POST['email']        ?? '');
-            $password     = trim($_POST['password']     ?? '');
-            $firstname    = trim($_POST['firstname']    ?? '');
-            $lastname     = trim($_POST['lastname']     ?? '');
+            $id          = $_SESSION['user_id'];
+            $email       = trim($_POST['email']        ?? '');
+            $password    =      $_POST['password']     ?? '';
+            $firstname   = trim($_POST['firstname']    ?? '');
+            $lastname    = trim($_POST['lastname']     ?? '');
             $phoneNumber = trim($_POST['phone_number'] ?? '');
 
-            updateUser($this->pdo, $id, $email, $password, $firstname, $lastname, $phoneNumber);
+            $error = updateUser($this->pdo, $id, $email, $password, $firstname, $lastname, $phoneNumber);
+
+            if ($error === null) {
+                $this->redirectToRoute('profile');
+            }
         }
 
-        $this->redirectToRoute('profile');
+        $this->render('profile-edit', ['user' => $user, 'error' => $error]);
     }
 
     // Supprime le compte de l'utilisateur connecté (POST).
