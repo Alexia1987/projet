@@ -1,11 +1,11 @@
-<?php include_once __DIR__ . '/../components/_header.php';
-include_once '../../models/LoginModel.php';
+<?php 
+include_once __DIR__ . '/../components/_header.php';
 ?>
 
 <main class="min-h-dvh flex justify-center items-center bg-gradient-to-br from-midnight-blue via-dark-blue-steel to-midnight-blue" 
       id="login-form">
 
-    <form action="login.php" 
+    <form action="index.php?page=login"
           method="POST" 
           class="flex flex-col justify-center items-center bg-dark-blue-steel/80 backdrop-blur-md p-8 rounded-2xl shadow-2xl border border-white/10 w-full max-w-md mx-4 duration-300 hover:shadow-fusion-orange/20">
         
@@ -27,6 +27,12 @@ include_once '../../models/LoginModel.php';
                         placeholder="••••••••">
                 </li>
 
+                <?php if (!empty($error)): ?>
+                <li>
+                    <p class="text-red-400 text-xs text-center"><?= htmlspecialchars($error) ?></p>
+                </li>
+                <?php endif; ?>
+
                 <li class="flex flex-col">
                     <button type="submit" name="login"
                             class="bg-fusion-orange hover:bg-amber-500 rounded-md text-midnight-blue text-xs mt-4 p-2">Se connecter</button>
@@ -35,7 +41,7 @@ include_once '../../models/LoginModel.php';
 
             <p class="text-neutral-50 text-sm mt-6">Pas encore de compte ? 
                 <span class="text-fusion-orange hover:underline">
-                    <a href='./register.php'>S'inscrire</a>
+                    <a href='index.php?page=register'>S'inscrire</a>
                     <i class="fa-regular fa-pen-to-square fa-sm"></i>
                 </span>
             </p>

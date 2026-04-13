@@ -1,12 +1,11 @@
 <?php 
 include_once __DIR__ . '/../components/_header.php';
-require_once '../../models/RegisterModel.php'; 
 ?>
 
 <main class="min-h-dvh flex justify-center items-center bg-gradient-to-br from-midnight-blue via-dark-blue-steel to-midnight-blue" 
       id="register-form">
 
-    <form action="register.php" 
+    <form action="index.php?page=register"
           method="POST" 
           class="flex flex-col justify-center items-center bg-dark-blue-steel/80 backdrop-blur-md p-8 rounded-2xl shadow-2xl border border-white/10 w-full max-w-md mx-4 my-20 duration-300 hover:shadow-fusion-orange/20">
 
@@ -54,15 +53,21 @@ require_once '../../models/RegisterModel.php';
                         class="bg-midnight-blue/50 border-2 rounded-lg border-white/10 text-zinc-100 px-4 py-1 transition-all duration-300 focus:border-fusion-orange focus:outline-none">
                 </li>
 
-                <li class="flex flex-col">           
+                <?php if (!empty($error)): ?>
+                <li>
+                    <p class="text-red-400 text-xs text-center"><?= htmlspecialchars($error) ?></p>
+                </li>
+                <?php endif; ?>
+
+                <li class="flex flex-col">
                     <button type="submit" name="register"
                      class="bg-fusion-orange hover:bg-amber-500 rounded-md text-midnight-blue text-xs mt-4 p-2">S'inscrire</button>
-                </li>  
+                </li>
             </ul>   
 
             <p class="text-neutral-50 text-sm mt-6">Déjà membre ?
                 <span class="text-fusion-orange hover:underline">
-                    <a href='./login.php'>Se connecter</a>
+                    <a href='index.php?page=login'>Se connecter</a>
                     <i class="fa-solid fa-user-check"></i>
                 </span>
             </p>        
