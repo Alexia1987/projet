@@ -33,7 +33,7 @@ function registerUser($pdo, $email, $passwordClear, $firstname, $lastname, $phon
 
         // Hachage du mot de passe.
         $options = ['cost' => 12];
-        $passwordHashed = password_hash($passwordClear, PASSWORD_DEFAULT, $options);
+        $passwordHashed = password_hash($passwordClear, PASSWORD_BCRYPT, $options);
 
         $sql = "INSERT INTO `user`(`usr_role_id`, `usr_email`, `usr_password`, `usr_firstname`, `usr_lastname`, `usr_phonenumber`)
                 VALUES(2, :email, :password, :firstname, :lastname, :phone_number)";
@@ -51,6 +51,7 @@ function registerUser($pdo, $email, $passwordClear, $firstname, $lastname, $phon
         return $result ? null : "Une erreur technique est survenue."; // (ex: la requête SQL a échoué)
 
     } catch (PDOException $e) {
+        
         return "Une erreur technique est survenue."; // (ex: connexion perdue)
     }
 }
