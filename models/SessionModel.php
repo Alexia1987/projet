@@ -1,5 +1,4 @@
 <?php
-$pdo = require_once __DIR__ . "/Database.php";
 require_once __DIR__ . '/OpeningHoursModel.php';
 
 // Récupère toutes les sessions à venir avec leurs infos associées.
