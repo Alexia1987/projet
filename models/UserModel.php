@@ -20,14 +20,14 @@ function getOneUser($pdo, $id)
 }
 
 // ---CREATE---
-function addUser($pdo, $roleId, $email, $clearPassword, $firstname, $lastname, $phoneNumber) {
+function addUser($pdo, $roleId, $email, $passwordClear, $firstname, $lastname, $phoneNumber) {
     try {
        
         // Validation des champs.
         if (!isEmailValid($email)) {            
             return "L'adresse email est invalide.";
         }
-        if (!isPasswordStrong($clearPassword)) {
+        if (!isPasswordStrong($passwordClear)) {
             return "Le mot de passe doit contenir entre 12 et 20 caractères, avec au moins une majuscule, une minuscule, un chiffre et un caractère spécial (@$!%*?&).";
         }
         if (!isNameValid($firstname)) {
@@ -50,7 +50,7 @@ function addUser($pdo, $roleId, $email, $clearPassword, $firstname, $lastname, $
         } else {
             // Hachage du mot de passe (uniquement si l'email est disponible).
             $options = ['cost' => 12];
-            $hashedPassword = password_hash($clearPassword, PASSWORD_DEFAULT, $options);
+            $passwordHashed = password_hash($passwordClear, PASSWORD_BCRYPT, $options);
 
             $sql = "INSERT INTO `user`(`usr_role_id`, `usr_email`, `usr_password`, `usr_firstname`, `usr_lastname`, `usr_phonenumber`)
                     VALUES(:role_id, :email, :password, :firstname, :lastname, :phone_number)";
@@ -60,13 +60,13 @@ function addUser($pdo, $roleId, $email, $clearPassword, $firstname, $lastname, $
             $result = $query->execute([
                 ':role_id'      => $roleId,
                 ':email'        => $email,
-                ':password'     => $hashedPassword,
+                ':password'     => $passwordHashed,
                 ':firstname'    => $firstname,
                 ':lastname'     => $lastname,
                 ':phone_number' => $phoneNumber
             ]);
 
-        return $result ? "Votre compte a été créé avec succès." : "Une erreur technique est survenue.";
+        return $result ? null : "Une erreur technique est survenue."; 
         }
 
     } catch (PDOException $e) {
@@ -77,32 +77,70 @@ function addUser($pdo, $roleId, $email, $clearPassword, $firstname, $lastname, $
 
 
 // ---UPDATE---
-function updateUser($pdo, $id, $email, $password, $firstname, $lastname, $phoneNumber) {
+function updateUser($pdo, $id, $email, $password, $firstname, $lastname, $phoneNumber): ?string {
     try {
-        
-        $options = ['cost' => 12];
-        $hashedPassword = password_hash($password, PASSWORD_BCRYPT, $options);
 
-        $sql = "UPDATE `user`
-                SET `usr_email` = :email,
-                    `usr_password` = :password,
-                    `usr_firstname` = :firstname,
-                    `usr_lastname` = :lastname,
-                    `usr_phonenumber` = :phone_number
-                WHERE `usr_id` = :id";
+        // Validation des champs obligatoires.
+        if (!isEmailValid($email)) {
+            return "L'adresse email est invalide.";
+        }
+        if (!isNameValid($firstname)) {
+            return "Le prénom est invalide.";
+        }
+        if (!isNameValid($lastname)) {
+            return "Le nom est invalide.";
+        }
+        if (!isPhoneValid($phoneNumber)) {
+            return "Le numéro de téléphone est invalide.";
+        }
 
-        $query = $pdo->prepare($sql);
+        // Validation du mot de passe uniquement s'il est renseigné.
+        if (!empty($password) && !isPasswordStrong($password)) {
+            return "Le mot de passe doit contenir entre 12 et 20 caractères, avec au moins une majuscule, une minuscule, un chiffre et un caractère spécial (@$!%*?&).";
+        }
 
-        $result = $query->execute([
-            ':id'           => $id,
-            ':email'        => $email,
-            ':password'     => $hashedPassword,
-            ':firstname'    => $firstname,
-            ':lastname'     => $lastname,
-            ':phone_number' => $phoneNumber
-        ]);
+        if (!empty($password)) {
+            $options = ['cost' => 12];
+            $hashedPassword = password_hash($password, PASSWORD_BCRYPT, $options);
 
-        return $result ? "Votre compte a été modifié avec succès." : "Une erreur technique est survenue.";
+            $sql = "UPDATE `user`
+                    SET `usr_email` = :email,
+                        `usr_password` = :password,
+                        `usr_firstname` = :firstname,
+                        `usr_lastname` = :lastname,
+                        `usr_phonenumber` = :phone_number
+                    WHERE `usr_id` = :id";
+
+            $query = $pdo->prepare($sql);
+
+            $result = $query->execute([
+                ':id'           => $id,
+                ':email'        => $email,
+                ':password'     => $hashedPassword,
+                ':firstname'    => $firstname,
+                ':lastname'     => $lastname,
+                ':phone_number' => $phoneNumber
+            ]);
+        } else {
+            $sql = "UPDATE `user`
+                    SET `usr_email` = :email,
+                        `usr_firstname` = :firstname,
+                        `usr_lastname` = :lastname,
+                        `usr_phonenumber` = :phone_number
+                    WHERE `usr_id` = :id";
+
+            $query = $pdo->prepare($sql);
+
+            $result = $query->execute([
+                ':id'           => $id,
+                ':email'        => $email,
+                ':firstname'    => $firstname,
+                ':lastname'     => $lastname,
+                ':phone_number' => $phoneNumber
+            ]);
+        }
+
+        return $result ? null : "Une erreur technique est survenue.";
 
     } catch (PDOException $e) {
         return "Une erreur technique est survenue.";
