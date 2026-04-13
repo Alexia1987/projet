@@ -19,10 +19,10 @@ class RegisterController extends AbstractController
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $email        = trim($_POST['email']        ?? '');
-            $password     = ($_POST['password']     ?? '');
+            $password     =      $_POST['password']     ?? '';
             $firstname    = trim($_POST['firstname']    ?? '');
             $lastname     = trim($_POST['lastname']     ?? '');
-            $phoneNumber = trim($_POST['phone_number'] ?? '');
+            $phoneNumber  = trim($_POST['phone_number'] ?? '');
 
             $error = registerUser($this->pdo, $email, $password, $firstname, $lastname, $phoneNumber);
 
