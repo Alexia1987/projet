@@ -5,11 +5,13 @@ require_once "./controllers/PublicController.php";
 require_once "./controllers/RegisterController.php";
 require_once "./controllers/SessionController.php";
 require_once "./controllers/UserController.php";
+require_once "./controllers/BookingController.php";
 $authController     = new AuthController();
 $publicController   = new PublicController();
 $registerController = new RegisterController();
 $sessionController  = new SessionController();
 $userController     = new UserController();
+$bookingController  = new BookingController();
 
 
 // 1. Définition de la fonction de sécurité
@@ -44,6 +46,7 @@ $allowed = [
     'home', 'login', 'logout', 'register', 'calendar',
     'profile', 'profile/edit', 'profile/delete',
     'admin/users', 'admin/add-user', 'admin/create-slots',
+    'booking'
 ];
 
 if (!in_array($pageRequest, $allowed)) {
@@ -97,6 +100,10 @@ switch ($pageRequest) {
     case 'admin/create-slots':
     $count = $sessionController->generateSlots('2026-04-01', '2026-04-30');
     echo "$count créneaux générés.";
+    break;
+
+    case 'booking':
+    $bookingController->manageBooking();
     break;
 
     default:
