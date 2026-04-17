@@ -15,7 +15,7 @@
         <div>           
             <button id="event-modal-cancel" class="bg-grey-blue-secondary hover:bg-gray-300 rounded-md text-midnight-blue text-s mt-4 p-2 cursor-pointer">Annuler</button>
         </div>
-        <form id="booking-form" method="POST" action="/reserver">
+        <form id="booking-form" method="POST" action="/projetFin/?page=booking">
             <label class="text-light text-m">Veuillez indiquer le nombre de participants :
                 <input type="hidden" id="session_id_input" name="session_id_input" value="">
                 <input type="text" id="participants_input" name="participants_input" class="bg-light text-midnight-blue mt-4">
