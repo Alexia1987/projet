@@ -15,6 +15,10 @@ class BookingController extends AbstractController
     // Méthode manageBooking() : POST → appelle addBooking(), redirige vers home si succès
     public function manageBooking(): void
     {
+        if (empty($_SESSION['user_id'])) {
+            $this->redirectToRoute('login');
+        }
+
         $error = null;
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
