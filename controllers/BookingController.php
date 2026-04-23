@@ -2,6 +2,7 @@
 
 require_once __DIR__ . "/AbstractController.php";
 require_once __DIR__ . "/../models/BookingModel.php";
+require_once __DIR__ . "/../models/SessionModel.php";
 
 class BookingController extends AbstractController
 {
@@ -14,8 +15,8 @@ class BookingController extends AbstractController
 
     // Méthode manageBooking() : POST → appelle addBooking(), redirige vers home si succès
     public function manageBooking(): void
-    {
-        if (empty($_SESSION['user_id'])) {
+    {      
+         if (!isset($_SESSION['user_id'])) {
             $this->redirectToRoute('login');
         }
 
@@ -26,10 +27,16 @@ class BookingController extends AbstractController
             $sessionId    =      $_POST['session_id_input']   ?? '';
             $participants = trim($_POST['participants_input'] ?? '');
 
-            $error = addBooking($this->pdo, $userId, $sessionId, $participants);
+            $remaining = getRemainingPlaces($this->pdo);
 
-            if ($error === null) {
-                $this->redirectToRoute('home');
+            if (isset($remaining[$sessionId]) && $remaining[$sessionId] >= (int)$participants) {
+                $error = addBooking($this->pdo, $userId, $sessionId, $participants);
+
+                if ($error === null) {
+                    $this->redirectToRoute('home');
+                }
+            } else {
+                $this->redirectToRoute('page-not-found');
             }
         }
 
