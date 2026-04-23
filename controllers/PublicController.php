@@ -10,4 +10,12 @@ class PublicController extends AbstractController
     {
         $this->render('home');
     }
+
+       public function showPageNotFound(): void
+    {
+        $this->render('404');
+    }
 }
+
+    
+ 
