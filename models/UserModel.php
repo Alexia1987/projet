@@ -1,11 +1,12 @@
 <?php
 
-require_once __DIR__ . "/../functions/validator.php";
+require_once __DIR__ . '/../helpers/paths.php';
+require_once __DIR__ . "/../helpers/validator.php";
 
 // ---READ---
 function getAllUsers($pdo)
 {
-    $sql = "SELECT * FROM `user`";
+    $sql = "SELECT `usr_id`, `usr_firstname`, `usr_lastname`, `usr_email`, `usr_phonenumber`, `usr_role_id` FROM `user`";
     $query = $pdo->prepare($sql);
     $query->execute();
     return $query->fetchAll();
@@ -13,7 +14,7 @@ function getAllUsers($pdo)
 
 function getOneUser($pdo, $id)
 {
-    $sql = "SELECT * FROM `user` WHERE `usr_id` = :id";
+    $sql = "SELECT `usr_id`, `usr_firstname`, `usr_lastname`, `usr_email`, `usr_phonenumber`, `usr_role_id` FROM `user` WHERE `usr_id` = :id";
     $query = $pdo->prepare($sql);
     $query->execute([':id' => $id]);
     return $query->fetch();
