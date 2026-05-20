@@ -1,6 +1,7 @@
 <?php
 
-require_once __DIR__ . "/AbstractController.php";
+require_once __DIR__ . '/../helpers/paths.php';
+load('controllers/AbstractController');
 
 // PublicController gère l'affichage de toutes les pages accessibles sans connexion.
 class PublicController extends AbstractController

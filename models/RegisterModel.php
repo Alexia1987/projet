@@ -1,6 +1,7 @@
 <?php
 
-require_once __DIR__ . "/../functions/validator.php";
+require_once __DIR__ . '/../helpers/paths.php';
+load('helpers/validator');
 
 function registerUser($pdo, $email, $passwordClear, $firstname, $lastname, $phoneNumber): ?string
 {

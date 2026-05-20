@@ -1,6 +1,7 @@
 <?php
 
-require_once __DIR__ . '/OpeningHoursModel.php';
+require_once __DIR__ . '/../helpers/paths.php';
+load('models/OpeningHoursModel');
 
 
 // ============================================================

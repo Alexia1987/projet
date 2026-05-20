@@ -1,4 +1,4 @@
-<?php require_once __DIR__ . '/../../helpers/paths.php'; ?>
+<?php require_once __DIR__ . '/../../../helpers/paths.php'; ?>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -80,6 +80,7 @@
     </article>
 
     <!-- Main Content -->
+     
     <main id="main-container" class="min-h-screen bg-midnight-blue">       
         <div id="main-title" class="block px-3 py-3 mb-7">
           <h2 class="text-light text-3xl font-space-grotesk uppercase italic">Base de données clients</h2>

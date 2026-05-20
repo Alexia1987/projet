@@ -1,6 +1,7 @@
 <?php
 
-require_once __DIR__ . '/SettingModel.php';
+require_once __DIR__ . '/../helpers/paths.php';
+load('models/SettingModel');
 
 // Lit opening_hours et
 // retourne les horaires standards pour un jour donné (1=lundi ... 7=dimanche),

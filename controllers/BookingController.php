@@ -1,8 +1,9 @@
 <?php
 
-require_once __DIR__ . "/AbstractController.php";
-require_once __DIR__ . "/../models/BookingModel.php";
-require_once __DIR__ . "/../models/SessionModel.php";
+require_once __DIR__ . '/../helpers/paths.php';
+load('controllers/AbstractController');
+load('models/BookingModel');
+load('models/SessionModel');
 
 class BookingController extends AbstractController
 {

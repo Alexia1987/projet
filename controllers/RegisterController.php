@@ -1,7 +1,8 @@
 <?php
 
-require_once __DIR__ . "/AbstractController.php";
-require_once __DIR__ . "/../models/RegisterModel.php";
+require_once __DIR__ . '/../helpers/paths.php';
+load('controllers/AbstractController');
+load('models/RegisterModel');
 
 class RegisterController extends AbstractController
 {

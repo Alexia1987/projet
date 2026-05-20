@@ -1,7 +1,7 @@
 <?php
 
 require_once __DIR__ . '/../helpers/paths.php';
-require_once __DIR__ . "/../helpers/validator.php";
+load('helpers/validator');
 
 // ---READ---
 function getAllUsers($pdo)

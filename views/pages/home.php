@@ -1,5 +1,5 @@
 <?php 
-include_once __DIR__ . '/../components/_header.php';
+load('views/components/_header');
 ?>
 
 

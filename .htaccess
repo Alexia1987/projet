@@ -1,0 +1,6 @@
+Options +FollowSymLinks
+RewriteEngine On
+RewriteBase /projetFin/
+
+# Redirige l'accès direct à views/pages/calendar.php vers la route contrôleur
+RewriteRule ^views/pages/calendar\.php$ index.php?page=calendar [R=301,L]

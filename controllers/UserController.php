@@ -1,7 +1,8 @@
 <?php
 
-require_once __DIR__ . "/AbstractController.php";
-require_once __DIR__ . "/../models/UserModel.php";
+require_once __DIR__ . '/../helpers/paths.php';
+load('controllers/AbstractController');
+load('models/UserModel');
 
 class UserController extends AbstractController
 {
@@ -97,6 +98,6 @@ class UserController extends AbstractController
         }
 
         $users = getAllUsers($this->pdo);
-        $this->render('admin-users', ['users' => $users]);
+        $this->render('admin/dashboard-users', ['users' => $users]);
     }
 }

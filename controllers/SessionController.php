@@ -1,7 +1,8 @@
 <?php
 
-require_once __DIR__ . "/AbstractController.php";
-require_once __DIR__ . '/../models/SessionModel.php';
+require_once __DIR__ . '/../helpers/paths.php';
+load('controllers/AbstractController');
+load('models/SessionModel');
 
 class SessionController extends AbstractController
 {
@@ -19,7 +20,7 @@ class SessionController extends AbstractController
 
     public function showCalendar(): void
     {
-        $slots     = getSlots($this->pdo);
+        $slots = getSlots($this->pdo);
         $remaining = getRemainingPlaces($this->pdo);
 
         $events = array_map(function ($slot) use ($remaining) {
@@ -37,13 +38,13 @@ class SessionController extends AbstractController
             }
 
             return [
-                'id'              => $slot['ses_id'],
-                'title'           => $title,
-                'start'           => $slot['ses_start_time'],
-                'end'             => $slot['ses_end_time'],
+                'id' => $slot['ses_id'],
+                'title' => $title,
+                'start' => $slot['ses_start_time'],
+                'end' => $slot['ses_end_time'],
                 'backgroundColor' => $color,
-                'borderColor'     => $color,
-                'extendedProps'   => [
+                'borderColor' => $color,
+                'extendedProps' => [
                     'price' => $slot['ses_price'],
                 ],
             ];

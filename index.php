@@ -1,11 +1,12 @@
 <?php
 session_start();
-require_once "./controllers/AuthController.php";
-require_once "./controllers/PublicController.php";
-require_once "./controllers/RegisterController.php";
-require_once "./controllers/SessionController.php";
-require_once "./controllers/UserController.php";
-require_once "./controllers/BookingController.php";
+require_once "./helpers/paths.php";
+load('controllers/AuthController');
+load('controllers/PublicController');
+load('controllers/RegisterController');
+load('controllers/SessionController');
+load('controllers/UserController');
+load('controllers/BookingController');
 $authController     = new AuthController();
 $publicController   = new PublicController();
 $registerController = new RegisterController();
@@ -45,7 +46,7 @@ $pageRequest = implode('/', $url);
 $allowed = [
     'home', 'login', 'logout', 'register', 'calendar',
     'profile', 'profile/edit', 'profile/delete',
-    'admin/users', 'admin/add-user', 'admin/create-slots',
+    'admin/dashboard-users', 'admin/add-user', 'admin/create-slots',
     'booking'
 ];
 
@@ -89,7 +90,7 @@ switch ($pageRequest) {
     $userController->deleteAccount();
     break;
 
-    case 'admin/users':
+    case 'admin/dashboard-users':
     $userController->showAllUsers();
     break;
 

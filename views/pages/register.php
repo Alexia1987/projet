@@ -1,5 +1,5 @@
 <?php 
-include_once __DIR__ . '/../components/_header.php';
+load('views/components/_header');
 ?>
 
 <main class="min-h-dvh flex justify-center items-center bg-gradient-to-br from-midnight-blue via-dark-blue-steel to-midnight-blue" 
